@@ -1,6 +1,7 @@
 package com.jhaiian.clint.settings.backuprestore
 
 import android.content.Context
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -70,6 +71,14 @@ import com.jhaiian.clint.ui.listscreen.ConfirmDialogConfig
 import com.jhaiian.clint.ui.listscreen.ConfirmDialogHost
 import com.jhaiian.clint.ui.theme.LocalClintColors
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import com.jhaiian.clint.cloud.CloudBackupManager
+import com.jhaiian.clint.cloud.WebDavClient
+import com.jhaiian.clint.cloud.WebDavEntry
+import com.jhaiian.clint.cloud.WebDavException
+import com.jhaiian.clint.cloud.WebDavSettings
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -146,6 +155,7 @@ fun BackupRestorePane(activity: SettingsActivity) {
     val uiState = remember { BackupRestoreUiState(hideStatusBar, hideSystemNavigation) }
 
     var simpleDialog by remember { mutableStateOf<ConfirmDialogConfig?>(null) }
+    var cloudRestoreState by remember { mutableStateOf<CloudRestoreListState?>(null) }
 
     val okLabel = stringResource(R.string.backup_generic_ok)
     val cancelLabel = stringResource(R.string.action_cancel)
@@ -177,6 +187,9 @@ fun BackupRestorePane(activity: SettingsActivity) {
     val backupPasswordTooShort = stringResource(R.string.backup_password_too_short)
     val backupPasswordMismatch = stringResource(R.string.backup_password_mismatch)
     val restorePasswordWrong = stringResource(R.string.restore_password_wrong)
+    val cloudRestoreTitle = stringResource(R.string.cloud_backup_restore_title)
+    val cloudNotConfigured = stringResource(R.string.cloud_backup_msg_not_configured)
+    val cloudDownloadFailed = stringResource(R.string.cloud_backup_download_failed)
 
     fun requireAuthThen(subtitle: String, onSuccess: () -> Unit) {
         if (!BackupAuthGate.isAuthenticationAvailable(activity)) {
@@ -272,29 +285,33 @@ fun BackupRestorePane(activity: SettingsActivity) {
         }
     }
 
+    suspend fun handleStageResult(stageResult: StageResult) {
+        when (stageResult) {
+            is StageResult.Staged -> {
+                uiState.stagedFile.value = stageResult.file
+                if (stageResult.file.header.encrypted) {
+                    uiState.stage.value = BackupRestoreStage.RESTORE_PASSWORD
+                } else {
+                    handleUnlockResult(RestoreManager.unlock(activity, stageResult.file, null))
+                }
+            }
+            is StageResult.InvalidFile -> {
+                uiState.stage.value = BackupRestoreStage.IDLE
+                simpleDialog = ConfirmDialogConfig(title = restoreInvalidTitle, message = restoreInvalidMessage, positiveLabel = okLabel)
+            }
+            is StageResult.Error -> {
+                uiState.stage.value = BackupRestoreStage.IDLE
+                simpleDialog = ConfirmDialogConfig(title = restoreGenericErrorTitle, message = restoreGenericErrorMessage, positiveLabel = okLabel)
+            }
+        }
+    }
+
     val openDocumentLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
         uiState.resetRestoreFlow()
         uiState.stage.value = BackupRestoreStage.RESTORE_LOADING
         scope.launch {
-            when (val stageResult = RestoreManager.stageFromUri(activity, uri)) {
-                is StageResult.Staged -> {
-                    uiState.stagedFile.value = stageResult.file
-                    if (stageResult.file.header.encrypted) {
-                        uiState.stage.value = BackupRestoreStage.RESTORE_PASSWORD
-                    } else {
-                        handleUnlockResult(RestoreManager.unlock(activity, stageResult.file, null))
-                    }
-                }
-                is StageResult.InvalidFile -> {
-                    uiState.stage.value = BackupRestoreStage.IDLE
-                    simpleDialog = ConfirmDialogConfig(title = restoreInvalidTitle, message = restoreInvalidMessage, positiveLabel = okLabel)
-                }
-                is StageResult.Error -> {
-                    uiState.stage.value = BackupRestoreStage.IDLE
-                    simpleDialog = ConfirmDialogConfig(title = restoreGenericErrorTitle, message = restoreGenericErrorMessage, positiveLabel = okLabel)
-                }
-            }
+            handleStageResult(RestoreManager.stageFromUri(activity, uri))
         }
     }
 
@@ -354,6 +371,65 @@ fun BackupRestorePane(activity: SettingsActivity) {
         }
     }
 
+    fun openCloudRestore() {
+        val config = WebDavSettings.load(activity)
+        if (!config.isComplete) {
+            simpleDialog = ConfirmDialogConfig(title = cloudRestoreTitle, message = cloudNotConfigured, positiveLabel = okLabel)
+            return
+        }
+        cloudRestoreState = CloudRestoreListState.Loading
+        scope.launch {
+            val result = withContext(Dispatchers.IO) {
+                runCatching { WebDavClient(config).list(CloudBackupManager.REMOTE_DIR) }
+            }
+            if (cloudRestoreState == null) return@launch
+            cloudRestoreState = result.fold(
+                onSuccess = { entries ->
+                    CloudRestoreListState.Loaded(
+                        entries.filter { !it.isDirectory && it.name.endsWith(".${CloudBackupManager.FILE_EXTENSION}") }
+                            .sortedByDescending { it.name }
+                    )
+                },
+                onFailure = { error ->
+                    if (error is WebDavException && error.kind == WebDavException.Kind.SERVER && error.httpCode == 404) {
+                        CloudRestoreListState.Loaded(emptyList())
+                    } else {
+                        CloudRestoreListState.Failed(cloudErrorMessage(activity, error))
+                    }
+                }
+            )
+        }
+    }
+
+    fun restoreFromCloud(entry: WebDavEntry) {
+        cloudRestoreState = null
+        requireAuthThen(authSubtitleRestore) {
+            uiState.resetRestoreFlow()
+            uiState.stage.value = BackupRestoreStage.RESTORE_LOADING
+            scope.launch {
+                val config = WebDavSettings.load(activity)
+                val downloaded = File(activity.cacheDir, "cloud_restore_download.${CloudBackupManager.FILE_EXTENSION}")
+                val download = withContext(Dispatchers.IO) {
+                    runCatching { WebDavClient(config).download(entry.href, downloaded) }
+                }
+                val error = download.exceptionOrNull()
+                if (error != null) {
+                    downloaded.delete()
+                    uiState.stage.value = BackupRestoreStage.IDLE
+                    simpleDialog = ConfirmDialogConfig(
+                        title = cloudDownloadFailed,
+                        message = cloudErrorMessage(activity, error),
+                        positiveLabel = okLabel
+                    )
+                    return@launch
+                }
+                val stageResult = RestoreManager.stageFromUri(activity, Uri.fromFile(downloaded))
+                downloaded.delete()
+                handleStageResult(stageResult)
+            }
+        }
+    }
+
     fun launchBackupCreation() {
         if (uiState.encryptBackup.value) {
             val error = when {
@@ -370,6 +446,16 @@ fun BackupRestorePane(activity: SettingsActivity) {
 
     SettingsScreenScaffold(
         overlay = {
+            cloudRestoreState?.let { state ->
+                CloudRestoreDialog(
+                    state = state,
+                    hideStatusBar = hideStatusBar,
+                    hideSystemNavigation = hideSystemNavigation,
+                    onPick = { restoreFromCloud(it) },
+                    onDismiss = { cloudRestoreState = null }
+                )
+            }
+
             ConfirmDialogHost(config = simpleDialog, hideStatusBar = hideStatusBar, hideSystemNavigation = hideSystemNavigation, onDismiss = { simpleDialog = null })
 
             if (uiState.stage.value == BackupRestoreStage.SELECT_BACKUP_CATEGORIES) {
@@ -475,6 +561,7 @@ fun BackupRestorePane(activity: SettingsActivity) {
                 onClick = { startRestoreFlow() }
             )
         }
+        CloudBackupSection(onRestoreFromCloud = { openCloudRestore() })
     }
 }
 
