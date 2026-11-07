@@ -2380,8 +2380,4 @@
     <string name="address_bar_link_copied">网页链接已复制到剪贴板</string>
     <string name="address_bar_paste">粘贴</string>
     <string name="address_bar_paste_and_go">粘贴并前往</string>
-    <string name="homepage_search_hint">搜索或输入网址</string>
-    <string name="custom_search_engine_title">自定义搜索引擎</string>
-    <string name="custom_search_engine_name">名称</string>
-    <string name="custom_search_engine_url">搜索网址 (URL)</string>
 </resources>

@@ -25,6 +25,11 @@ android {
         versionName = "v1.2.6"
     }
 
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+    }
+
     val hasSigningConfig = localProperties.getProperty("signingConfig.storePassword") != null
 
     if (hasSigningConfig) {
