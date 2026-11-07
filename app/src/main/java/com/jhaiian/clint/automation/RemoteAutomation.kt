@@ -177,11 +177,13 @@ object RemoteAutomation {
 
     /** LAN IPv4 addresses of this device (Wi-Fi first). */
     fun lanAddresses(): List<String> = try {
-        NetworkInterface.getNetworkInterfaces().toList()
-            .filter { it.isUp && !it.isLoopback }
-            .sortedBy { if (it.name.startsWith("wlan")) 0 else if (it.name.startsWith("eth")) 1 else 2 }
+        val up = NetworkInterface.getNetworkInterfaces().toList().filter { it.isUp && !it.isLoopback }
+        fun v4(list: List<NetworkInterface>) = list
             .flatMap { nif -> nif.inetAddresses.toList().filterIsInstance<Inet4Address>().map { it.hostAddress.orEmpty() } }
             .filter { it.isNotEmpty() }
             .distinct()
+        // Prefer Wi-Fi / Ethernet; fall back to anything else (VPN, tethering, mobile data).
+        v4(up.filter { it.name.startsWith("wlan") || it.name.startsWith("eth") || it.name.startsWith("ap") })
+            .ifEmpty { v4(up) }
     } catch (_: Throwable) { emptyList() }
 }

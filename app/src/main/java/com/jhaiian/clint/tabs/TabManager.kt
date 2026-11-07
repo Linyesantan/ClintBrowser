@@ -2,6 +2,11 @@ package com.jhaiian.clint.tabs
 
 class TabManager {
 
+    companion object {
+        /** Localized title for tabs that have not reported one yet; set by MainActivity. */
+        @Volatile var defaultTitle: String = "New Tab"
+    }
+
     val tabs = mutableListOf<BrowserTab>()
     val groups = mutableListOf<TabGroup>()
     var activeIndex = 0
@@ -90,7 +95,7 @@ class TabManager {
     }
 
     fun previews(): List<TabPreview> = tabs.filter { !isGhostTab(it) }.map {
-        TabPreview(it.id, it.title.ifBlank { "New Tab" }, if (com.jhaiian.clint.browser.home.isClintHomeUrl(it.url)) "" else it.url, it.isIncognito, it.profileId, (it.webView as? com.jhaiian.clint.browser.webview.ClintWebView)?.audioState, it.groupId)
+        TabPreview(it.id, it.title.ifBlank { defaultTitle }, if (com.jhaiian.clint.browser.home.isClintHomeUrl(it.url)) "" else it.url, it.isIncognito, it.profileId, (it.webView as? com.jhaiian.clint.browser.webview.ClintWebView)?.audioState, it.groupId)
     }
 
     fun moveTab(fromIndex: Int, toIndex: Int) {

@@ -221,10 +221,10 @@
     <string name="about_license_link_label">查看 GPL v3.0 开源协议 \u2197</string>
     <string name="about_opensource_text">完整源代码已公开发布在 GitHub 上。欢迎提交代码贡献、错误反馈以及新功能建议。</string>
     <string name="about_github_url">github.com/jhaiian/ClintBrowser \u2197</string>
-    <string name="about_section_keep_android_open">捍卫 ANDROID 开放生态</string>
+    <string name="about_section_keep_android_open">捍卫 Android 开放生态</string>
     <string name="about_keep_android_open_text">Google 正在推行强制性开发者身份验证政策，这严重威胁到了 Android 上的侧载自由以及包括此类应用在内的独立应用生态。了解更多详情并发出您的呼吁。</string>
     <string name="about_keep_android_open_url">keepandroidopen.org \u2197</string>
-    <string name="support_clint_title">Support Clint 浏览器</string>
+    <string name="support_clint_title">支持 Clint 浏览器</string>
     <string name="support_clint_summary">帮助 Clint 浏览器永久保持免费。欢迎向 Clint 浏览器开发者提供赞助。</string>
     <string name="support_clint_view_supporters_title">查看赞助者名单</string>
     <string name="support_clint_view_supporters_summary">查看所有支持 Clint 浏览器开发的赞助者</string>
@@ -292,7 +292,7 @@
     <string name="pref_updates_title">检查更新</string>
     <string name="download_settings_title">下载</string>
     <string name="download_settings_summary">下载管理器、保存路径、计划下载、限速及重试设置</string>
-    <string name="download_section_manager">下载 MANAGER</string>
+    <string name="download_section_manager">下载管理器</string>
     <string name="download_manager_title">下载管理器</string>
     <string name="download_manager_summary">多线程分块加速、断点续传、计划下载与下载限速</string>
     <string name="download_manager_dialog_title">选择下载管理器</string>
@@ -302,12 +302,12 @@
     <string name="download_manager_option_1dm_lite">1DM Lite</string>
     <string name="download_manager_option_adm">ADM</string>
     <string name="download_manager_not_installed">未安装</string>
-    <string name="download_location_label">下载 Location</string>
+    <string name="download_location_label">下载位置</string>
     <string name="download_location_option_default">下载</string>
     <string name="download_location_option_custom">自定义</string>
     <string name="download_location_tap_to_choose">点击选择保存文件夹…</string>
-    <string name="download_section_location">下载 LOCATION</string>
-    <string name="download_categorize_title">Categorize 下载</string>
+    <string name="download_section_location">下载位置</string>
+    <string name="download_categorize_title">按类型分类下载</string>
     <string name="download_categorize_summary">将下载文件分类归档至视频、图片、音频和文档等文件夹</string>
     <string name="download_section_measurement">单位换算</string>
     <string name="measurement_system_title">容量度量单位</string>
@@ -326,7 +326,7 @@
     <string name="download_notification_waiting_schedule">等待计划时间</string>
     <string name="download_notification_waiting_custom_schedule">计划于 %1$s 开始</string>
     <string name="download_section_scheduling">定时下载</string>
-    <string name="download_schedule_enabled_title">Scheduled 下载</string>
+    <string name="download_schedule_enabled_title">计划下载</string>
     <string name="download_schedule_enabled_summary">仅在 %1$s 至 %2$s 之间自动下载。</string>
     <string name="download_schedule_start_title">开始时间</string>
     <string name="download_schedule_end_title">结束时间</string>
@@ -363,7 +363,7 @@
     <string name="download_history_incognito_title">保存无痕下载历史记录</string>
     <string name="download_history_incognito_summary">在下载列表中保留无痕标签页中已完成的记录。无论是否开启，已下载的文件均会保留</string>
     <string name="download_section_general">常规</string>
-    <string name="download_section_dialog_ui">下载 DIALOG</string>
+    <string name="download_section_dialog_ui">下载对话框</string>
     <string name="download_dialog_ui_title">界面样式</string>
     <string name="download_dialog_ui_standard">标准</string>
     <string name="download_dialog_ui_standard_desc">宽松布局，包含分组标题与详细说明</string>
@@ -376,7 +376,7 @@
     <string name="download_duplicate_handling_add_desc">若先前的下载已完成，则同时保留两个文件，并在新文件名后追加数字编号</string>
     <string name="download_duplicate_handling_overwrite">覆盖已有文件</string>
     <string name="download_duplicate_handling_overwrite_desc">若先前的下载已完成，则使用新下载的文件替换旧文件</string>
-    <string name="download_quick_download_title">Quick 下载</string>
+    <string name="download_quick_download_title">快速下载</string>
     <string name="download_quick_download_summary">跳过下载对话框，直接按全局下载设置开始下载</string>
     <string name="download_quick_download_images_title">快捷下载图片</string>
     <string name="download_quick_download_images_summary">通过图片长按菜单保存图片时跳过下载对话框</string>
@@ -386,7 +386,7 @@
     <string name="download_error_size_mismatch">下载未完成：已接收 %1$s，共 %2$s</string>
     <string name="download_total_speed_limit_title">总速度限制</string>
     <string name="download_total_speed_limit_unlimited">所有下载任务均不限速</string>
-    <string name="download_log_title">下载 log</string>
+    <string name="download_log_title">下载日志</string>
     <string name="download_log_summary">为各个任务及所有下载活动记录详细日志以便排查问题。开启后将占用额外存储空间。</string>
     <string name="download_log_view">查看日志</string>
     <string name="download_log_item_title">日志 · %1$s</string>
@@ -432,10 +432,10 @@
     <string name="crash_step_expand">点击展开崩溃日志条目</string>
     <string name="crash_step_copy">复制崩溃日志</string>
     <string name="crash_step_open_github">点击“打开 GitHub Issues”</string>
-    <string name="crash_step_new_issue">创建新 Issue</string>
+    <string name="crash_step_new_issue">创建新的问题（Issue）</string>
     <string name="crash_step_attach">附上崩溃日志</string>
     <string name="crash_step_submit">提交报告</string>
-    <string name="crash_template_title">Issue 模板</string>
+    <string name="crash_template_title">问题模板</string>
     <string name="crash_copy_template">复制模板</string>
     <string name="crash_template_copied">已复制到剪贴板</string>
     <string name="crash_open_github">打开 GitHub Issues</string>
@@ -556,7 +556,7 @@
     <string name="download_manual_fetching">正在获取…</string>
     <string name="download_manual_error_invalid_url">请输入有效的网址</string>
     <string name="download_manual_error_network">无法访问该网址。请先尝试在浏览器中打开此链接。</string>
-    <string name="download_manual_fab_desc">Add 下载</string>
+    <string name="download_manual_fab_desc">添加下载</string>
     <string name="download_menu_share">分享</string>
     <string name="download_menu_open_folder">打开所在文件夹</string>
     <string name="download_file_missing">文件已不存在</string>
@@ -573,10 +573,10 @@
     <string name="download_update_link_dialog_positive">更新</string>
     <string name="download_menu_redownload">重新下载</string>
     <string name="download_menu_redownload_options">自定义选项重新下载</string>
-    <string name="download_menu_change_settings">Change 下载 设置</string>
-    <string name="download_change_settings_dialog_title">Change 下载 设置</string>
+    <string name="download_menu_change_settings">更改下载设置</string>
+    <string name="download_change_settings_dialog_title">更改下载设置</string>
     <string name="download_change_settings_dialog_info">此处仅显示在该下载进行期间可安全更改的设置。更改将立即生效。</string>
-    <string name="download_change_settings_saved">设置 updated</string>
+    <string name="download_change_settings_saved">设置已更新</string>
     <string name="action_save">保存</string>
     <string name="redownload_confirm_title">要重新下载吗？</string>
     <string name="redownload_confirm_message">现有文件将被删除并重新下载。是否继续？</string>
@@ -611,10 +611,10 @@
     <string name="download_props_label_path">保存路径</string>
     <string name="download_props_label_size">文件大小</string>
     <string name="download_props_label_downloaded">已下载</string>
-    <string name="download_props_label_url">下载 link</string>
+    <string name="download_props_label_url">下载链接</string>
     <string name="download_props_label_video_url">视频下载链接</string>
     <string name="download_props_label_audio_url">音频下载链接</string>
-    <string name="download_props_label_page">下载 page</string>
+    <string name="download_props_label_page">来源网页</string>
     <string name="download_props_label_referer">Referer 请求头</string>
     <string name="download_props_label_avg_speed">平均速度</string>
     <string name="download_props_label_active_time">下载用时</string>
@@ -655,7 +655,7 @@
     <string name="action_not_now">暂不</string>
     <string name="action_allow">允许</string>
     <string name="action_open">打开</string>
-    <string name="action_open_settings">Open 设置</string>
+    <string name="action_open_settings">打开设置</string>
     <string name="action_delete">删除</string>
     <string name="action_copy">复制</string>
 
@@ -761,11 +761,11 @@
     <string name="download_eta_hours">%1$d 小时 %2$d 分</string>
     <string name="download_notification_channel_name">Clint 下载</string>
     <string name="download_notification_channel_desc">文件下载进度</string>
-    <string name="download_event_notification_channel_name">下载 Alerts</string>
+    <string name="download_event_notification_channel_name">下载提醒</string>
     <string name="download_event_notification_channel_desc">下载完成、失败及重试通知</string>
-    <string name="download_notification_complete">下载 complete</string>
-    <string name="download_notification_failed">下载 failed</string>
-    <string name="download_notification_retrying">Retrying 下载\u2026</string>
+    <string name="download_notification_complete">下载完成</string>
+    <string name="download_notification_failed">下载失败</string>
+    <string name="download_notification_retrying">正在重试下载\u2026</string>
     <string name="download_notification_retrying_in">%1$d 秒后重试\u2026</string>
     <string name="download_notification_paused">已暂停</string>
     <string name="download_paused">已暂停</string>
@@ -775,7 +775,7 @@
     <string name="download_paused_waiting_custom_schedule">计划于 %1$s 开始</string>
     <string name="download_status_queued">排队中</string>
     <string name="download_section_concurrent">同时下载</string>
-    <string name="download_section_split_parts">SPLIT 下载</string>
+    <string name="download_section_split_parts">分段下载</string>
     <string name="download_split_parts_title">分块下载段数</string>
     <string name="download_split_parts_desc">单文件最多可拆分的分块数。较小的文件实际分块数可能会更少，以避免不必要的开销。</string>
     <string name="download_section_multithreading">多线程</string>
@@ -797,14 +797,14 @@
     <string name="download_speed_limit_dialog_message">输入 0 表示不限速。单位 KB/MB 取决于您的度量单位设置。</string>
     <string name="speed_limit_unit_kb">KB/s</string>
     <string name="speed_limit_unit_mb">MB/s</string>
-    <string name="download_concurrent_title">Concurrent 下载</string>
+    <string name="download_concurrent_title">同时下载数</string>
     <string name="download_concurrent_desc">允许同时进行的下载任务数。超出上限的任务将进入队列排队，空出配额后自动开始。</string>
     <string name="download_concurrent_value_easter_egg">24 个同时下载任务 \uD83D\uDE08</string>
     <string name="action_play">播放</string>
     <string name="action_pause">暂停</string>
     <string name="action_resume">继续</string>
-    <string name="download_pause_desc">Pause 下载</string>
-    <string name="download_resume_desc">Resume 下载</string>
+    <string name="download_pause_desc">暂停下载</string>
+    <string name="download_resume_desc">继续下载</string>
     <string name="download_resumable_yes">支持断点续传：是</string>
     <string name="download_resumable_no">断点续传：不支持</string>
 
@@ -947,7 +947,7 @@
     <string name="surface_intensity_amoled_no_tint_dark_desc">纯黑底色，仅核心控制按钮和高亮图标保留强调色</string>
     <string name="surface_intensity_amoled_no_tint_light_desc">纯白底色，仅核心控制按钮和高亮图标保留强调色</string>
     <string name="pref_misc_title">其他杂项</string>
-    <string name="pref_misc_summary">设为默认浏览器或重新运行初始设置向导</string>
+    <string name="pref_misc_summary">设为默认浏览器、重新运行初始设置向导或开启 AI 远程自动化</string>
     <string name="pref_rerun_setup_title">重新运行初始向导</string>
     <string name="pref_rerun_setup_summary">重新打开首次启动时的配置流程</string>
     <string name="rerun_setup_confirm_title">重新运行设置向导？</string>
@@ -986,15 +986,15 @@
 
     <string name="bookmarks_title">书签</string>
     <string name="content_desc_bookmark">书签</string>
-    <string name="bookmarks_empty">No 书签 yet</string>
+    <string name="bookmarks_empty">还没有书签</string>
     <string name="bookmarks_search">搜索</string>
-    <string name="bookmarks_search_hint">Search 书签…</string>
+    <string name="bookmarks_search_hint">搜索书签…</string>
     <string name="bookmarks_selected_count">已选 %d 项</string>
     <string name="bookmarks_delete_selected">删除</string>
     <string name="bookmarks_delete_selected_desc">删除所选书签</string>
     <string name="bookmarks_delete_confirm_title">确认删除？</string>
-    <string name="bookmarks_delete_confirm_message">Delete %d 书签(s)?</string>
-    <string name="bookmarks_items_deleted">书签 deleted</string>
+    <string name="bookmarks_delete_confirm_message">要删除 %d 个书签吗？</string>
+    <string name="bookmarks_items_deleted">书签已删除</string>
     <string name="bookmarks_sort_by_date_added">按添加时间</string>
     <string name="bookmarks_new_folder_desc">新建文件夹</string>
     <string name="bookmarks_new_folder_title">新建文件夹</string>
@@ -1009,25 +1009,25 @@
     <string name="bookmarks_folder_item_count">%d 项</string>
     <string name="bookmarks_add_fab_desc">添加书签或文件夹</string>
     <string name="bookmarks_fab_add_folder">新建文件夹</string>
-    <string name="bookmarks_fab_add_bookmark">Add 书签</string>
-    <string name="bookmarks_new_bookmark_title">Add 书签</string>
+    <string name="bookmarks_fab_add_bookmark">添加书签</string>
+    <string name="bookmarks_new_bookmark_title">添加书签</string>
     <string name="bookmarks_bookmark_title_hint">标题</string>
     <string name="bookmarks_bookmark_url_hint">网址</string>
-    <string name="bookmarks_import">Import 书签</string>
-    <string name="bookmarks_export">Export 书签</string>
-    <string name="bookmarks_import_title">Import 书签</string>
-    <string name="bookmarks_export_title">Export 书签</string>
+    <string name="bookmarks_import">导入书签</string>
+    <string name="bookmarks_export">导出书签</string>
+    <string name="bookmarks_import_title">导入书签</string>
+    <string name="bookmarks_export_title">导出书签</string>
     <string name="bookmarks_format_html">HTML</string>
     <string name="bookmarks_format_html_desc">兼容 Chrome、Firefox、Safari 及 Edge</string>
     <string name="bookmarks_format_sqlite">SQLite 数据库</string>
     <string name="bookmarks_format_sqlite_desc">完整备份，保留所有文件夹层级与添加日期</string>
-    <string name="bookmarks_import_success">Imported %d 书签</string>
+    <string name="bookmarks_import_success">已导入 %d 个书签</string>
     <string name="bookmarks_import_error">导入书签失败</string>
-    <string name="bookmarks_export_success">书签 exported</string>
+    <string name="bookmarks_export_success">书签已导出</string>
     <string name="bookmarks_export_error">导出书签失败</string>
 
     <string name="downloads_title">下载</string>
-    <string name="downloads_empty">No 下载 yet</string>
+    <string name="downloads_empty">还没有下载内容</string>
     <string name="downloads_filter_all">全部</string>
     <string name="downloads_type_video">视频</string>
     <string name="downloads_type_audio">音频</string>
@@ -1080,13 +1080,13 @@
     <string name="downloads_section_library">已下载</string>
     <string name="downloads_setting_no_limit">不限速</string>
     <string name="downloads_setting_wifi_only">仅限 Wi-Fi</string>
-    <string name="downloads_setting_more">More 设置</string>
+    <string name="downloads_setting_more">更多设置</string>
     <string name="downloads_sheet_copy_link">复制链接</string>
     <string name="downloads_sheet_copy_name">复制文件名</string>
     <string name="downloads_sheet_copy_path">复制文件路径</string>
     <string name="downloads_selection_more">更多</string>
     <string name="downloads_sheet_delete">删除</string>
-    <string name="downloads_sheet_download_next">下载 next</string>
+    <string name="downloads_sheet_download_next">下一个下载</string>
     <string name="downloads_sheet_folder">在文件夹中显示</string>
     <string name="downloads_sheet_redownload">重新下载</string>
     <string name="downloads_sheet_redownload_custom">重新下载…</string>
@@ -1120,7 +1120,7 @@
         <item quantity="other">%1$d 页</item>
     </plurals>
     <string name="downloads_search">搜索</string>
-    <string name="downloads_search_hint">Search 下载…</string>
+    <string name="downloads_search_hint">搜索下载…</string>
     <string name="downloads_sort">排序</string>
     <string name="downloads_more_options">更多选项</string>
     <string name="downloads_overflow_menu_desc">更多操作</string>
@@ -1133,11 +1133,11 @@
     <string name="downloads_selected_count">已选 %d 项</string>
     <string name="downloads_delete_selected_desc">删除所选下载</string>
     <string name="downloads_delete_confirm_title">确认删除？</string>
-    <string name="downloads_delete_confirm_message">Remove %d 下载(s)?</string>
+    <string name="downloads_delete_confirm_message">要移除 %d 个下载吗？</string>
     <string name="downloads_delete_also_from_storage">同时从设备存储中删除文件</string>
     <string name="downloads_deleting_title">正在删除…</string>
     <string name="downloads_deleting_progress">%1$d / %2$d</string>
-    <string name="downloads_items_removed">下载 removed</string>
+    <string name="downloads_items_removed">下载已移除</string>
 
     <string name="about_section_legal">法律信息</string>
     <string name="about_legal_view">查看</string>
@@ -1167,7 +1167,7 @@
     <string name="image_open_in_current_tab">在当前标签页中打开图片</string>
     <string name="image_preview">预览图片</string>
     <string name="image_copy">复制图片</string>
-    <string name="image_download">下载 image</string>
+    <string name="image_download">下载图片</string>
     <string name="image_share">分享图片</string>
     <string name="image_copied">已复制到剪贴板</string>
     <string name="image_copy_failed">复制图片失败</string>
@@ -1175,7 +1175,7 @@
 
     <string name="link_open_in_new_tab">在新标签页中打开</string>
     <string name="link_open_new_tab_background">在后台打开新标签页</string>
-    <string name="link_open_incognito">Open in 无痕</string>
+    <string name="link_open_incognito">在无痕标签页中打开</string>
     <string name="link_preview_page">预览网页</string>
     <string name="preview_link_open_in_current_tab">在当前标签页中打开</string>
     <string name="link_copy_address">复制链接地址</string>
@@ -1224,7 +1224,7 @@
     <string name="menu_data_saver">省流模式</string>
     <string name="menu_quiver_guard">箭袋卫士</string>
     <string name="menu_website_blocker">网站拦截器</string>
-    <string name="about_webview_label">WEBVIEW</string>
+    <string name="about_webview_label">WebView</string>
     <string name="about_webview_info">%1$s\n%2$s\nv%3$s</string>
     <string name="about_webview_unavailable">不可用</string>
 
@@ -1326,7 +1326,7 @@
     <string name="quiver_guard_exception_no_saved_sites">未保存任何网站</string>
     <string name="quiver_guard_exception_search_hint">搜索已保存的网站…</string>
     <string name="quiver_guard_exception_add_site">添加网站</string>
-    <string name="quiver_guard_exception_state_label">箭袋卫士 Disabled</string>
+    <string name="quiver_guard_exception_state_label">箭袋卫士已停用</string>
     <string name="quiver_guard_exception_delete_title">移除已保存的网站</string>
     <string name="quiver_guard_exception_delete_message">确定移除这 %d 个已保存的网站吗？</string>
     <string name="quiver_guard_exception_items_deleted">已移除保存的网站</string>
@@ -1374,7 +1374,7 @@
     <string name="battery_opt_rationale_message">为确保在切换到其他应用时下载任务仍能继续进行，请允许 Clint 浏览器忽略电池优化。若不开启，当应用转入后台时，系统可能会暂停或中断下载。</string>
     <string name="download_metered_warning_title">检测到按流量计费网络</string>
     <string name="download_metered_warning_message">已开启“仅限非计费网络”，但您当前连接的是按流量计费网络。是否仍使用该网络下载此文件？</string>
-    <string name="action_download_anyway">下载 anyway</string>
+    <string name="action_download_anyway">仍要下载</string>
     <string name="download_conflict_title">文件已存在</string>
     <string name="download_conflict_add_duplicate">保留两者（创建副本）</string>
     <string name="download_conflict_override">覆盖现有文件</string>
@@ -1504,7 +1504,7 @@
     <string name="about_attribution_text">查看此应用中使用的第三方开源库、图标及致谢完整列表。</string>
     <string name="document_viewer_attribution_title">鸣谢与开源许可</string>
 
-    <string name="quiver_guard_master_switch_title">Enable 箭袋卫士</string>
+    <string name="quiver_guard_master_switch_title">启用箭袋卫士</string>
     <string name="quiver_guard_description">使用规则列表拦截广告、跟踪器及烦人元素</string>
     <string name="quiver_guard_auto_update_title">自动更新规则列表</string>
     <string name="quiver_guard_auto_update_summary">在后台检查新版本，并在需要时自动应用更新</string>
@@ -1521,8 +1521,8 @@
     <string name="quiver_guard_download_progress_known">%1$s / %2$s（%3$d%%）</string>
     <string name="quiver_guard_download_progress_unknown">已下载 %1$s</string>
     <string name="quiver_guard_download_success_toast">%1$s 下载完成</string>
-    <string name="quiver_guard_download_error_toast">Failed to 下载 %1$s</string>
-    <string name="quiver_guard_download_cancelled_toast">下载 cancelled</string>
+    <string name="quiver_guard_download_error_toast">%1$s 下载失败</string>
+    <string name="quiver_guard_download_cancelled_toast">已取消下载</string>
     <string name="quiver_guard_download_error_http">服务器返回错误（错误码 %1$d）</string>
     <string name="quiver_guard_download_error_network">无法访问该网址。请检查网络连接后重试。</string>
 
@@ -1530,7 +1530,7 @@
     <string name="filter_list_add_menu_from_link">从网络链接添加</string>
     <string name="filter_list_add_menu_from_file">从本地文件导入</string>
     <string name="filter_list_add_dialog_title">添加规则列表</string>
-    <string name="filter_list_add_url_hint">下载 Link</string>
+    <string name="filter_list_add_url_hint">列表下载链接</string>
     <string name="filter_list_add_title_hint">标题</string>
     <string name="filter_list_add_action_fetch">获取</string>
     <string name="filter_list_add_action_add">添加</string>
@@ -1718,7 +1718,7 @@
     <string name="backup_category_profiles">配置文件</string>
     <string name="backup_category_profiles_desc">身份组及其登录状态与 Cookie</string>
     <string name="backup_category_bookmarks">书签</string>
-    <string name="backup_category_bookmarks_desc">Saved 书签</string>
+    <string name="backup_category_bookmarks_desc">已保存的书签</string>
     <string name="backup_category_search_history">搜索历史记录</string>
     <string name="backup_category_search_history_desc">您的搜索建议历史记录</string>
     <string name="backup_category_site_permissions">网站权限</string>
@@ -1829,7 +1829,7 @@
     <string name="website_blocker_category_tracking_desc">拦截跟踪器及数据分析域名</string>
 
     <string name="website_blocker_search_hint">搜索分类…</string>
-    <string name="website_blocker_master_switch_title">Enable 网站拦截器</string>
+    <string name="website_blocker_master_switch_title">启用网站拦截器</string>
     <string name="website_blocker_section_categories">分类</string>
     <string name="website_blocker_back_dialog_message">您的网站拦截器配置已更改但尚未编译。在完成编译前，这些更改不会生效。</string>
     <string name="website_blocker_compile_progress_title">正在编译拦截规则</string>
@@ -1851,7 +1851,7 @@
     <string name="website_blocker_recompile_confirm_message">是否立即使用当前已启用的分类重新编译拦截规则？</string>
     <string name="website_blocker_menu_recompile">重新编译拦截规则</string>
     <string name="website_blocker_name_clip_label">分类名称</string>
-    <string name="website_blocker_link_clip_label">Category 下载 URL</string>
+    <string name="website_blocker_link_clip_label">分类下载地址</string>
     <string name="website_blocker_share_chooser_title">分享分类链接</string>
 
     <string name="website_blocked_title">该网站已被拦截</string>
@@ -1876,10 +1876,10 @@
 
     <string name="user_scripts_title">用户脚本 (油猴)</string>
     <string name="user_scripts_settings_summary">编写或导入自定义 JavaScript 脚本以注入网页</string>
-    <string name="user_scripts_master_switch_title">Enable 用户脚本</string>
+    <string name="user_scripts_master_switch_title">启用用户脚本</string>
     <string name="user_scripts_master_switch_summary">向您访问的网页中注入已保存的脚本</string>
     <string name="user_scripts_empty">尚未添加用户脚本 (油猴脚本)</string>
-    <string name="user_scripts_search_hint">Search 用户脚本</string>
+    <string name="user_scripts_search_hint">搜索用户脚本</string>
     <string name="user_scripts_upload_fab_desc">导入脚本文件</string>
     <string name="user_scripts_add_fab_desc">编写新脚本</string>
     <string name="user_scripts_add_menu_link">从链接添加</string>
@@ -2072,13 +2072,13 @@
     <string name="data_saver_exception_no_saved_sites">未保存任何网站</string>
     <string name="data_saver_exception_search_hint">搜索已保存的网站…</string>
     <string name="data_saver_exception_add_site">添加网站</string>
-    <string name="data_saver_exception_state_label">省流模式 Disabled</string>
+    <string name="data_saver_exception_state_label">省流模式已停用</string>
     <string name="data_saver_exception_delete_title">移除已保存的网站</string>
     <string name="data_saver_exception_delete_message">确定要移除 %d 个已保存的网站吗？</string>
     <string name="data_saver_exception_items_deleted">已移除保存的网站</string>
     <string name="menu_disable_data_saver_for_site">对此网站停用省流模式</string>
-    <string name="settings_search">Search 设置</string>
-    <string name="settings_search_hint">Search 设置…</string>
+    <string name="settings_search">搜索设置</string>
+    <string name="settings_search_hint">搜索设置…</string>
     <string name="settings_search_prompt">搜索全部设置</string>
     <string name="settings_search_no_results">暂无内容</string>
     <string name="settings_group_general">常规设置</string>
@@ -2111,7 +2111,7 @@
     <string name="profiles_picker_manage">管理</string>
     <string name="shortcut_profile_title">配置文件</string>
     <string name="shortcut_profile_summary">使用该配置文件的 Cookie 和登录信息打开此桌面快捷方式</string>
-    <string name="profiles_picker_shortcut_title">Open 快捷方式 in</string>
+    <string name="profiles_picker_shortcut_title">用以下身份组打开快捷方式</string>
     <string name="custom_themes_title">自定义主题</string>
     <string name="custom_themes_row_summary">创建、编辑和管理专属于你的色彩主题</string>
     <string name="custom_themes_intro">完全自主挑选每一种颜色来定制专属主题。每个主题均支持浅色与深色双重调色板，自动匹配当前明暗模式。</string>
@@ -2191,7 +2191,7 @@
     <string name="custom_theme_preview_screen_dialog">对话框</string>
     <string name="custom_theme_preview_dialog_title">删除浏览数据？</string>
     <string name="custom_theme_preview_dialog_message">这将清除您的历史记录、Cookie 和缓存文件。</string>
-    <string name="custom_theme_preview_site_1_title" translatable="false">Example</string>
+    <string name="custom_theme_preview_site_1_title" translatable="false">示例网站</string>
     <string name="custom_theme_preview_site_1_host" translatable="false">example.com</string>
     <string name="custom_theme_preview_site_2_title" translatable="false">Wikipedia</string>
     <string name="custom_theme_preview_site_2_host" translatable="false">wikipedia.org</string>
@@ -2282,7 +2282,7 @@
     <string name="clear_on_exit_cache">缓存</string>
     <string name="clear_on_exit_tabs">已打开的标签页</string>
     <string name="clear_on_exit_none">未选择任何项</string>
-    <string name="incognito_keyboard_title">无痕 keyboard</string>
+    <string name="incognito_keyboard_title">无痕键盘</string>
     <string name="incognito_keyboard_summary">请求输入法不记录您在无痕模式下输入的内容</string>
     <string name="translation_menu_translate">翻译此页面</string>
     <string name="translation_action_translate">翻译</string>
@@ -2395,7 +2395,7 @@
     <string name="remote_automation_result_ok">成功</string>
     <string name="remote_automation_result_failed">失败</string>
     <string name="remote_automation_token_title">访问令牌</string>
-    <string name="remote_automation_token_hint">点按即可复制。请求时放进请求头 “Authorization: Bearer &lt;令牌&gt;”。</string>
+    <string name="remote_automation_token_hint">点按复制。调用时加请求头：Authorization: Bearer &lt;令牌&gt;</string>
     <string name="remote_automation_token_regenerate">重新生成</string>
     <string name="remote_automation_token_copied">已复制访问令牌</string>
     <string name="remote_automation_token_regenerated">已生成新令牌，旧令牌已失效</string>

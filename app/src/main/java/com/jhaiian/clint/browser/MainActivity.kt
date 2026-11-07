@@ -327,6 +327,7 @@ class MainActivity : ClintActivity(), OverlayHostActivity, SnackbarHostActivity,
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        com.jhaiian.clint.tabs.TabManager.defaultTitle = getString(com.jhaiian.clint.R.string.new_tab)
         CrashHandler.install(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
