@@ -31,6 +31,8 @@ data class WebDavEntry(
     val isDirectory: Boolean
 )
 
+data class WebDavText(val body: String, val etag: String?)
+
 /** Minimal WebDAV client: PROPFIND, MKCOL, PUT, GET, DELETE with HTTP basic auth. */
 class WebDavClient(config: WebDavSettings.Config) {
 
@@ -106,6 +108,62 @@ class WebDavClient(config: WebDavSettings.Config) {
             }
         }
     }
+
+    /** GETs a text file as UTF-8. Returns null when it does not exist. */
+    fun getText(path: String): WebDavText? {
+        val request = newRequest(resolve(path)).get().header("Cache-Control", "no-cache").build()
+        execute(request).use { response ->
+            if (response.code == 404) return null
+            if (!response.isSuccessful) throwForStatus(response)
+            val bytes = try {
+                response.body.bytes()
+            } catch (e: IOException) {
+                throw WebDavException(WebDavException.Kind.NETWORK, detail = describeNetworkError(e))
+            }
+            return WebDavText(String(bytes, Charsets.UTF_8), response.header("ETag"))
+        }
+    }
+
+    /**
+     * PUTs a text file as UTF-8. With [ifMatch] / [ifNoneMatchAny] the write only happens if the file is
+     * still the version we read; returns false when the server answers 412 (it changed meanwhile).
+     */
+    fun putText(
+        path: String,
+        text: String,
+        ifMatch: String? = null,
+        ifNoneMatchAny: Boolean = false,
+        contentType: String = "application/xml; charset=utf-8"
+    ): Boolean {
+        val builder = newRequest(resolve(path)).put(text.toByteArray(Charsets.UTF_8).toRequestBody(contentType.toMediaType()))
+        if (ifMatch != null) builder.header("If-Match", ifMatch)
+        if (ifNoneMatchAny) builder.header("If-None-Match", "*")
+        execute(builder.build()).use { response ->
+            if (response.code == 412) return false
+            if (!response.isSuccessful) throwForStatus(response)
+        }
+        return true
+    }
+
+    /** PROPFIND depth 0 on one file. Returns null when it does not exist. */
+    fun stat(path: String): WebDavEntry? {
+        val request = newRequest(resolve(path))
+            .header("Depth", "0")
+            .method("PROPFIND", PROPFIND_BODY.toRequestBody("application/xml; charset=utf-8".toMediaType()))
+            .build()
+        execute(request).use { response ->
+            if (response.code == 404) return null
+            if (response.code != 207 && response.code != 200) throwForStatus(response)
+            val body = try {
+                response.body.string()
+            } catch (e: IOException) {
+                throw WebDavException(WebDavException.Kind.NETWORK, detail = describeNetworkError(e))
+            }
+            return parseMultiStatus(body).firstOrNull()
+        }
+    }
+
+    fun deletePath(path: String) = delete(resolve(path).toString())
 
     private fun propfind(url: HttpUrl, depth: Int): Response {
         val request = newRequest(url)

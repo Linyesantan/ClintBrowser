@@ -31,6 +31,10 @@ class ClintApplication : Application() {
         com.jhaiian.clint.downloads.ClintDownloadManager.init(this)
         com.jhaiian.clint.quiver.QuiverGuardAutoUpdater.schedule(this)
         com.jhaiian.clint.automation.RemoteAutomation.init(this)
+        com.jhaiian.clint.bookmarks.BookmarkManager.changeListener = { ctx ->
+            com.jhaiian.clint.cloud.BookmarkSyncScheduler.onLocalChange(ctx)
+        }
+        runCatching { com.jhaiian.clint.cloud.BookmarkSyncScheduler.apply(this) }
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
             override fun onActivityStarted(activity: Activity) {}

@@ -2472,4 +2472,25 @@
     <string name="cloud_backup_notification_title_success">Cloud backup succeeded</string>
     <string name="cloud_backup_notification_title_failed">Cloud backup failed</string>
     <string name="cloud_backup_size_unknown" translatable="false">—</string>
+    <string name="bookmark_sync_section_title">Bookmark sync</string>
+    <string name="bookmark_sync_hint">Two-way bookmark sync with Floccus on your computer, using the WebDAV account above. In Floccus choose WebDAV with the XBEL bookmark file type, the same file path as here, and no encryption passphrase.</string>
+    <string name="bookmark_sync_path">Bookmark file path</string>
+    <string name="bookmark_sync_path_hint">Relative to the server address, default bookmarks.xbel, no leading /</string>
+    <string name="bookmark_sync_now">Sync bookmarks now</string>
+    <string name="bookmark_sync_running">Syncing…</string>
+    <string name="bookmark_sync_auto_title">Sync bookmarks automatically</string>
+    <string name="bookmark_sync_auto_summary">When the app opens, 15 seconds after a bookmark change, and every 30 minutes when online</string>
+    <string name="bookmark_sync_status_none">Last sync: none yet</string>
+    <string name="bookmark_sync_status_line">Last sync: %1$s · %2$s</string>
+    <string name="bookmark_sync_result_failed">Failed</string>
+    <string name="bookmark_sync_msg_success">On this device: %1$d added, %2$d removed, %3$d changed; %4$s</string>
+    <string name="bookmark_sync_remote_updated">server file updated</string>
+    <string name="bookmark_sync_remote_same">server file already up to date</string>
+    <string name="bookmark_sync_msg_locked">Floccus is syncing right now (lock file on the server); will retry automatically</string>
+    <string name="bookmark_sync_msg_parse_error">The server bookmark file is not valid XBEL. Sync stopped, nothing changed: %1$s</string>
+    <string name="bookmark_sync_msg_mass_delete">This sync would delete %1$s bookmarks (more than half), so it stopped and changed nothing. If that is intended, reset the sync state first, then sync (adds only)</string>
+    <string name="bookmark_sync_msg_failed">Sync failed: %1$s</string>
+    <string name="bookmark_sync_reset_title">Reset sync state</string>
+    <string name="bookmark_sync_reset_summary">Forget the last sync; the next one works like the first: merge both sides, add only, never delete</string>
+    <string name="bookmark_sync_reset_done">Reset. The next sync only adds</string>
 </resources>

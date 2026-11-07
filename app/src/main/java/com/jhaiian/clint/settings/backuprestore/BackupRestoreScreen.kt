@@ -562,6 +562,7 @@ fun BackupRestorePane(activity: SettingsActivity) {
             )
         }
         CloudBackupSection(onRestoreFromCloud = { openCloudRestore() })
+        BookmarkSyncSection()
     }
 }
 

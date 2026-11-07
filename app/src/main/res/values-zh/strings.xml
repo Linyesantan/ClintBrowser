@@ -2471,4 +2471,25 @@
     <string name="cloud_backup_channel_desc">自动与手动云端备份的结果</string>
     <string name="cloud_backup_notification_title_success">云端备份成功</string>
     <string name="cloud_backup_notification_title_failed">云端备份失败</string>
+    <string name="bookmark_sync_section_title">书签同步</string>
+    <string name="bookmark_sync_hint">和电脑上的 Floccus 双向同步书签，使用上面的 WebDAV 账号。Floccus 里选「WebDAV」、书签文件类型选「XBEL」，文件路径与这里一致，不设加密口令。</string>
+    <string name="bookmark_sync_path">书签文件路径</string>
+    <string name="bookmark_sync_path_hint">相对服务器地址，默认 bookmarks.xbel，前面不要加 /</string>
+    <string name="bookmark_sync_now">立即同步书签</string>
+    <string name="bookmark_sync_running">正在同步…</string>
+    <string name="bookmark_sync_auto_title">自动同步书签</string>
+    <string name="bookmark_sync_auto_summary">打开 App 时、改动书签后 15 秒，以及每 30 分钟联网时自动同步</string>
+    <string name="bookmark_sync_status_none">上次同步：暂无记录</string>
+    <string name="bookmark_sync_status_line">上次同步：%1$s · %2$s</string>
+    <string name="bookmark_sync_result_failed">失败</string>
+    <string name="bookmark_sync_msg_success">本机新增 %1$d、删除 %2$d、修改 %3$d；%4$s</string>
+    <string name="bookmark_sync_remote_updated">云端已更新</string>
+    <string name="bookmark_sync_remote_same">云端无需更新</string>
+    <string name="bookmark_sync_msg_locked">Floccus 正在同步（云端有锁文件），稍后会自动重试</string>
+    <string name="bookmark_sync_msg_parse_error">云端书签文件不是有效的 XBEL，已停止同步，两边都没改：%1$s</string>
+    <string name="bookmark_sync_msg_mass_delete">这次同步会删掉 %1$s 个书签（超过一半），已安全停止，两边都没改。确认没问题的话，先「重置同步状态」再同步（只增不删）</string>
+    <string name="bookmark_sync_msg_failed">同步失败：%1$s</string>
+    <string name="bookmark_sync_reset_title">重置同步状态</string>
+    <string name="bookmark_sync_reset_summary">忘掉上次同步的记录，下次同步按首次处理：两边合并，只增不删</string>
+    <string name="bookmark_sync_reset_done">已重置，下次同步只增不删</string>
 </resources>
