@@ -9,7 +9,7 @@ auth.token = "<FRPS_AUTH_TOKEN>"
 [[proxies]]
 name = "clint-automation"
 type = "tcp"
-localIP = "127.0.0.1"
+localIP = "127.0.0.1"   # 隧道跑在另一台设备上时改成 Clint 手机的局域网地址
 localPort = 9333
 remotePort = <REMOTE_PORT>
 

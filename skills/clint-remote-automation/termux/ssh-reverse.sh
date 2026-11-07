@@ -11,9 +11,10 @@ set -u
 REMOTE_PORT="${REMOTE_PORT:-19333}"
 SSH_PORT="${SSH_PORT:-22}"
 LOCAL_PORT="${CLINT_PORT:-9333}"
+LOCAL_ADDR="${CLINT_ADDR:-127.0.0.1}"  # 隧道跑在另一台设备上时，填 Clint 手机的局域网地址
 OPTS=(-N -o ExitOnForwardFailure=yes -o ServerAliveInterval=20 -o ServerAliveCountMax=3
       -o StrictHostKeyChecking=accept-new -p "$SSH_PORT"
-      -R "127.0.0.1:${REMOTE_PORT}:127.0.0.1:${LOCAL_PORT}" "$REMOTE")
+      -R "127.0.0.1:${REMOTE_PORT}:${LOCAL_ADDR}:${LOCAL_PORT}" "$REMOTE")
 termux-wake-lock 2>/dev/null || true
 if command -v autossh >/dev/null; then
   export AUTOSSH_GATETIME=0

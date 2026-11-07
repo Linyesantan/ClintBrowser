@@ -113,6 +113,28 @@ python3 clint_remote.py raw POST /eval '{"js":"location.href"}'
 
 保持隧道常驻：`termux-wake-lock`（脚本已调用），并在系统电池设置里允许 Termux 与 Clint 后台运行。
 
+### 隧道跑在另一台设备上（同一局域网）
+
+隧道不一定要和 Clint 在同一台手机上：Clint 装在手机 A，cloudflared / frp / SSH 装在同一局域网的手机 B
+（或电脑、路由器、NAS）也可以。做法：
+
+1. 手机 A 的 Clint 里**关闭**「仅本机监听」，让接口监听局域网；在设置的「服务状态」里看到
+   `<CLINT_LAN_IP>:9333`。
+2. 在设备 B 上先确认能直连：`CLINT_ADDR=<CLINT_LAN_IP> CLINT_TOKEN=<TOKEN> bash termux/check-local.sh`
+   （返回 401 说明网络通、只是缺令牌；超时则说明两台设备不在同一网段或被 AP 隔离挡住了）。
+3. 在设备 B 上照常运行上面的脚本，只多传一个 `CLINT_ADDR=<CLINT_LAN_IP>`，例如
+   `CLINT_ADDR=<CLINT_LAN_IP> bash termux/cloudflared-quick.sh`，或
+   `CLINT_ADDR=<CLINT_LAN_IP> REMOTE=<USER>@<HOST> bash termux/ssh-reverse.sh`；
+   frp 则把 `frpc.toml` 里的 `localIP` 改成 `<CLINT_LAN_IP>`。
+4. 外部照常用隧道地址 + `Authorization: Bearer <TOKEN>` 调用。
+
+注意：
+
+- 这种方式下局域网内任何设备都能连到 `<CLINT_LAN_IP>:9333`（仍需令牌），请只在可信网络使用，用完关闭开关。
+- 给手机 A 在路由器里设固定 IP（DHCP 静态分配），否则地址变了隧道就断。
+- 设备 B 若不在同一网段（例如连的是另一个 Wi-Fi），可以先用 `ssh -L 127.0.0.1:<LOCAL_PORT>:<CLINT_LAN_IP>:9333 <USER>@<能访问 A 的主机>`
+  把接口转到 B 本机，再让隧道指向 `127.0.0.1:<LOCAL_PORT>`（`CLINT_ADDR=127.0.0.1 CLINT_PORT=<LOCAL_PORT>`）。
+
 ## 5. 中继模式（WebSocket，无需端口转发）
 
 在「中继服务器地址」里填 `wss://<RELAY_HOST>/<PATH>`，Clint 会带 `Authorization: Bearer <TOKEN>` 主动连接，
