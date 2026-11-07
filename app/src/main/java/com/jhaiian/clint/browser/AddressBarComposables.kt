@@ -368,7 +368,7 @@ internal fun AddressBarRow(
             modifier = Modifier
                 .padding(start = 10.dp)
                 .size(26.dp)
-                .border(2.dp, colors.iconTint, RoundedCornerShape(7.dp))
+                .border(1.75.dp, colors.onSurface.copy(alpha = 0.85f), RoundedCornerShape(6.dp))
                 .combinedClickable(
                     onClick = onTabCountClick,
                     onLongClickLabel = stringResource(if (isIncognito) R.string.new_incognito_tab else R.string.new_tab),
@@ -380,7 +380,7 @@ internal fun AddressBarRow(
         ) {
             Text(
                 text = tabCountText,
-                color = colors.iconTint,
+                color = colors.onSurface,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
