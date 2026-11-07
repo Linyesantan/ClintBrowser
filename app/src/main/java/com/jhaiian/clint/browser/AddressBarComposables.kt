@@ -167,7 +167,7 @@ internal fun AddressBarRow(
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
                 .weight(1f)
-                .height(48.dp)
+                .height(44.dp)
                 .combinedClickable(
                     onClick = onAddressBarClick,
                     onLongClick = {
@@ -258,7 +258,7 @@ internal fun AddressBarRow(
                         )
                 ) {
                     Icon(
-                        imageVector = if (!hasSiteInfo) androidx.compose.material.icons.Icons.Filled.Search else if (isSecure) androidx.compose.material.icons.Icons.Filled.Lock else androidx.compose.material.icons.Icons.Filled.LockOpen,
+                        imageVector = if (!hasSiteInfo) androidx.compose.material.icons.Icons.Filled.Search else if (isSecure) androidx.compose.material.icons.Icons.Filled.Tune else androidx.compose.material.icons.Icons.Filled.Info,
                         contentDescription = if (hasSiteInfo) stringResource(R.string.site_info_title) else null,
                         tint = colors.iconTint,
                         modifier = Modifier.size(20.dp)
@@ -280,7 +280,7 @@ internal fun AddressBarRow(
                     modifier = Modifier.padding(start = 4.dp).weight(1f)
                 ) { text ->
                     Text(
-                        text = text.ifEmpty { addressBarHint },
+                        text = if (text.isEmpty()) addressBarHint else chromeStyleDisplayUrl(text),
                         color = if (text.isEmpty()) colors.secondaryText else colors.onSurface,
                         fontSize = 16.sp,
                         maxLines = 1,
@@ -365,8 +365,8 @@ internal fun AddressBarRow(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .padding(start = 10.dp)
-                .size(width = 34.dp, height = 26.dp)
-                .border(2.dp, colors.primary, RoundedCornerShape(5.dp))
+                .size(26.dp)
+                .border(2.dp, colors.iconTint, RoundedCornerShape(7.dp))
                 .combinedClickable(
                     onClick = onTabCountClick,
                     onLongClickLabel = stringResource(if (isIncognito) R.string.new_incognito_tab else R.string.new_tab),
@@ -378,9 +378,9 @@ internal fun AddressBarRow(
         ) {
             Text(
                 text = tabCountText,
-                color = colors.primary,
+                color = colors.iconTint,
                 fontSize = 12.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
         }
@@ -388,6 +388,15 @@ internal fun AddressBarRow(
             com.jhaiian.clint.browser.menu.MenuTriggerButton(activity)
         }
     }
+}
+
+/** Chrome-style omnibox text: show only the host (without "www.") for web pages. */
+internal fun chromeStyleDisplayUrl(text: String): String {
+    val uri = runCatching { android.net.Uri.parse(text) }.getOrNull() ?: return text
+    val scheme = uri.scheme?.lowercase() ?: return text
+    if (scheme != "http" && scheme != "https") return text
+    val host = uri.host?.takeIf { it.isNotBlank() } ?: return text
+    return host.removePrefix("www.")
 }
 
 private class AddressBarEditMenuPositionProvider(
