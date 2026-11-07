@@ -1,6 +1,9 @@
 name: Build Clint Browser ARM64
 
 on:
+  push:
+    branches:
+      - '**'
   workflow_dispatch:
 
 env:
@@ -41,12 +44,21 @@ jobs:
       - name: Grant Execute Permission for gradlew
         run: chmod +x gradlew
 
-      - name: Decode Signing Keystore
+      - name: Setup Signing Keystore
         run: |
-          printf '%s' "${{ secrets.BASE_64_SIGNING_KEY }}" | tr -d '\n' | base64 -d > app/release_keystore.jks
-
-      - name: Create local.properties
-        run: printf '%s\n' "${{ secrets.LOCAL_PROPERTIES }}" > local.properties
+          if [ -n "${{ secrets.BASE_64_SIGNING_KEY }}" ]; then
+            printf '%s' "${{ secrets.BASE_64_SIGNING_KEY }}" | tr -d '\n' | base64 -d > app/release_keystore.jks
+            printf '%s\n' "${{ secrets.LOCAL_PROPERTIES }}" > local.properties
+          else
+            echo "Generating fallback build keystore..."
+            keytool -genkeypair -v -keystore app/release_keystore.jks -alias clint -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=Clint, OU=Clint, O=Clint, L=Clint, S=Clint, C=US"
+            cat <<EOF > local.properties
+signingConfig.storeFile=app/release_keystore.jks
+signingConfig.storePassword=123456
+signingConfig.keyAlias=clint
+signingConfig.keyPassword=123456
+EOF
+          fi
 
       - name: Build GitHub Release APKs
         run: ./gradlew assembleGithubRelease
@@ -60,3 +72,4 @@ jobs:
           name: Clint-arm64-v8a
           path: app/build/outputs/apk/github/release/app-github-arm64-v8a-release.apk
           if-no-files-found: error
+          retention-days: 3
