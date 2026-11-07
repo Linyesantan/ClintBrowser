@@ -165,7 +165,7 @@
     <string name="custom_search_engine_dialog_title">Custom Search Engine</string>
     <string name="custom_search_engine_name_hint">Name</string>
     <string name="custom_search_engine_name_required">Name is required</string>
-    <string name="custom_search_engine_url_hint">Search URL</string>
+    <string name="custom_search_engine_url_hint">用 {query} 代替搜索关键字，例如: https://www.google.com/search?q={query}</string>
     <string name="custom_search_engine_url_helper">Use %1$s where the search term goes</string>
     <string name="custom_search_engine_url_example">Example: https://www.google.com/search?q=%1$s</string>
     <string name="custom_search_engine_url_error">Enter a valid URL that includes %1$s</string>
@@ -189,7 +189,7 @@
     <string name="custom_search_suggestions_api_url_helper">Use %1$s where the search term goes</string>
     <string name="custom_search_suggestions_api_url_example">Example: https://duckduckgo.com/ac/?q=%1$s&amp;type=list</string>
     <string name="custom_search_suggestions_api_url_error">Enter a valid URL that includes %1$s</string>
-    <string name="search_bar_hint">Search %1$s or type URL</string>
+    <string name="search_bar_hint">在 %1$s 搜索或输入网址</string>
     <string name="default_label">默认</string>
     <string name="next">Next \u2192</string>
     <string name="get_started">Get Started</string>
@@ -201,8 +201,8 @@
     <string name="google_warning_message">Google will collect your search data and associate it with your account or IP address. Clint 浏览器 cannot prevent this.\n\nFor better privacy, consider DuckDuckGo or Brave instead.</string>
     <string name="use_google_anyway">Use Google anyway</string>
     <string name="choose_another">Choose another</string>
-    <string name="new_tab">New Tab</string>
-    <string name="new_incognito_tab">New 无痕 Tab</string>
+    <string name="new_tab">新建标签页</string>
+    <string name="new_incognito_tab">新建无痕标签页</string>
     <string name="desktop_mode">Desktop Mode</string>
     <string name="close_tab">Close tab</string>
     <string name="incognito">无痕</string>
@@ -502,7 +502,7 @@
     <string name="create_shortcut_unsupported">当前桌面启动器不支持添加快捷方式</string>
     <string name="menu_downloads">下载</string>
     <string name="menu_bookmarks">书签</string>
-    <string name="menu_history">History</string>
+    <string name="menu_history">历史记录</string>
     <string name="reader_mode">Reader Mode</string>
 
     <string name="action_ok">确定</string>
@@ -808,10 +808,10 @@
     <string name="download_resumable_yes">Resume: Yes</string>
     <string name="download_resumable_no">Resume: No</string>
 
-    <string name="setup_default_browser_title">Default Browser</string>
-    <string name="setup_default_browser_description">Make Clint 浏览器 your default browser so links from other apps open here automatically. This is completely optional, you can change it at any time in your device 设置.</string>
-    <string name="setup_default_browser_card_title">Set as Default Browser</string>
-    <string name="setup_default_browser_card_desc">Tap the button below to set Clint 浏览器 as your default browser</string>
+    <string name="setup_default_browser_title">默认浏览器</string>
+    <string name="setup_default_browser_description">将 Clint 设为默认浏览器，其他应用中的网页链接将自动在此打开。此设置完全自愿，您随时可在系统设置中修改。</string>
+    <string name="setup_default_browser_card_title">设为默认浏览器</string>
+    <string name="setup_default_browser_card_desc">轻触下方按钮将 Clint 设为系统默认浏览器</string>
     <string name="setup_default_browser_set_button">设为默认浏览器</string>
     <string name="setup_default_browser_skip">跳过</string>
 
@@ -828,7 +828,7 @@
     <string name="accent_default_desc">Neutral grayscale tones across the UI</string>
     <string name="accent_material_you">Material You</string>
     <string name="accent_material_you_desc">Dynamic colors based on your wallpaper</string>
-    <string name="setup_layout_title">Browser Layout</string>
+    <string name="setup_layout_title">浏览器界面布局</string>
     <string name="setup_layout_subtitle">Configure how the browser\'s interface is arranged. You can fine-tune these any time in 设置.</string>
     <string name="setup_section_address_bar">地址栏 POSITION</string>
     <string name="setup_section_menu_style">菜单样式</string>
@@ -977,7 +977,7 @@
     <string name="setup_terms_agree">I have read and agree to the Privacy Policy and Terms of Service</string>
     <string name="setup_terms_continue">Agree &amp; Continue</string>
 
-    <string name="setup_restore_title">Restore from Backup</string>
+    <string name="setup_restore_title">从备份恢复</string>
     <string name="setup_restore_subtitle">Have a Clint 浏览器 backup? Restore it now to bring back your 设置 and data, or skip to set up as new.</string>
     <string name="setup_restore_card_title">Restore Backup</string>
     <string name="setup_restore_card_desc">Choose a .clintbackup file from your device</string>
@@ -1233,9 +1233,9 @@
     <string name="history_delete_desc">Remove from history</string>
     <string name="suggestion_url_desc">Page URL</string>
     <string name="suggestion_section_search">Search suggestions</string>
-    <string name="history_title">History</string>
-    <string name="history_summary">View and manage browsing and search history</string>
-    <string name="history_empty">No history yet</string>
+    <string name="history_title">历史记录</string>
+    <string name="history_summary">查看和管理网页浏览与搜索记录</string>
+    <string name="history_empty">暂无历史记录</string>
     <string name="history_empty_hint">Sites you visit and things you search for will show up here.</string>
     <string name="history_no_results">暂无历史记录</string>
     <string name="delete_data_title">Delete browsing data</string>
@@ -1246,7 +1246,7 @@
     <string name="delete_data_range_week">Last 7 days</string>
     <string name="delete_data_range_four_weeks">Last 4 weeks</string>
     <string name="delete_data_range_all_time">All time</string>
-    <string name="delete_data_history">Browsing history</string>
+    <string name="delete_data_history">历史浏览记录</string>
     <string name="delete_data_cookies">Cookies and site data</string>
     <string name="delete_data_cache">Cached images and files</string>
     <string name="delete_data_tabs">Tabs</string>
@@ -1291,7 +1291,7 @@
     <string name="history_sort_descending">Descending</string>
     <string name="history_more_options">More options</string>
     <string name="history_search">搜索</string>
-    <string name="history_search_hint">Search history…</string>
+    <string name="history_search_hint">搜索历史记录…</string>
     <string name="history_cancel_selection_desc">Cancel selection</string>
     <string name="history_delete_confirm_title">确认删除？</string>
     <string name="history_delete_confirm_message">Remove %d item(s) from history?</string>
@@ -1330,7 +1330,7 @@
     <string name="quiver_guard_exception_delete_title">Remove saved sites</string>
     <string name="quiver_guard_exception_delete_message">Remove %d saved site(s)?</string>
     <string name="quiver_guard_exception_items_deleted">Saved sites removed</string>
-    <string name="menu_disable_quiver_guard_for_site">Disable 箭袋卫士 for this site</string>
+    <string name="menu_disable_quiver_guard_for_site">对此网站停用箭袋卫士</string>
 
     <string name="site_permission_default_behavior">Default behavior</string>
     <string name="site_permission_ask_first">Ask first</string>
@@ -1420,8 +1420,8 @@
     <string name="tab_menu_delete_selected">Delete Selected Tabs</string>
     <string name="tab_menu_drag_handle_desc">Drag to reorder</string>
     <string name="tab_menu_select_tab_desc">Select tab</string>
-    <string name="tab_group_new">New Tab Group</string>
-    <string name="tab_group_new_tab_in_group">New Tab in Group</string>
+    <string name="tab_group_new">新建标签页分组</string>
+    <string name="tab_group_new_tab_in_group">在分组中新建标签页</string>
     <string name="tab_group_edit">Edit Name and Color</string>
     <string name="tab_group_edit_title">Edit group</string>
     <string name="tab_group_create">创建</string>
@@ -1963,12 +1963,12 @@
     <string name="user_scripts_force_update_selected_confirm_title">Force Update Selected Scripts</string>
     <string name="user_scripts_force_update_selected_confirm_message">%1$d selected script(s) will be re-downloaded unconditionally. Proceed?</string>
     <string name="user_scripts_selection_not_updatable">None of the selected scripts have a source link to update from.</string>
-    <string name="menu_media_capture">Media</string>
+    <string name="menu_media_capture">媒体嗅探</string>
     <string name="media_capture_dialog_title">抓取到的流媒体</string>
     <string name="media_capture_count_label">%1$d detected on this page</string>
     <string name="media_capture_scanning">Scanning this page for media\u2026</string>
     <string name="media_capture_close">关闭</string>
-    <string name="media_capture_empty_state">No media detected on this page yet. Play a video or audio track to detect it here.</string>
+    <string name="media_capture_empty_state">当前网页未嗅探到任何媒体。播放音视频后将自动在此列出。</string>
     <string name="media_capture_youtube_title">YouTube videos can\'t be captured</string>
     <string name="media_capture_youtube_message">YouTube splits its videos into protected pieces that Media Capture can\'t save. Install YTDLnis to 下载 them, and Media Capture will send YouTube videos straight to it.</string>
     <string name="media_capture_youtube_get_ytdlnis">Get YTDLnis</string>
@@ -1985,7 +1985,7 @@
     <string name="media_capture_copy_link">复制媒体直链</string>
     <string name="media_capture_download">下载</string>
     <string name="media_capture_duplicate_link_updated">下载 link updated</string>
-    <string name="media_capture_link_clip_label">Media URL</string>
+    <string name="media_capture_link_clip_label">媒体网址</string>
     <string name="media_capture_link_copied">链接已复制到剪贴板</string>
     <string name="media_capture_segments_count">%1$d segments</string>
     <string name="media_capture_cue_count">%1$d lines</string>
@@ -2044,9 +2044,9 @@
     <string name="homepage_center_content_title">Center Content</string>
     <string name="homepage_center_content_summary">Vertically center the Clint 浏览器 homepage content on the screen</string>
     <string name="homepage_image_error">Couldn\'t use that image. Please try another one.</string>
-    <string name="home_greeting_morning">Good morning</string>
-    <string name="home_greeting_afternoon">Good afternoon</string>
-    <string name="home_greeting_evening">Good evening</string>
+    <string name="home_greeting_morning">早上好</string>
+    <string name="home_greeting_afternoon">下午好</string>
+    <string name="home_greeting_evening">晚上好</string>
     <string name="home_favorites">Favorites</string>
     <string name="home_recent">Recently visited</string>
     <string name="home_favorites_empty">Pin the sites you visit most. Tap here to add one</string>
@@ -2106,7 +2106,7 @@
     <string name="profiles_in_use_message">Close every tab that uses %1$s, then try again. If you think you already closed all tabs, restart the app and try again.</string>
     <string name="profiles_unsupported_title">Update WebView</string>
     <string name="profiles_unsupported_message">Profiles need a newer version of Android System WebView. Update it in Google Play to use this feature.</string>
-    <string name="profiles_new_tab_in">New tab in profile…</string>
+    <string name="profiles_new_tab_in">在指定身份中新建标签页…</string>
     <string name="profiles_picker_title">Open new tab in</string>
     <string name="profiles_picker_manage">Manage</string>
     <string name="shortcut_profile_title">Profile</string>
@@ -2277,7 +2277,7 @@
     <string name="clear_on_exit_title">Clear data on exit</string>
     <string name="clear_on_exit_summary">Deletes the selected data when you close the app</string>
     <string name="clear_on_exit_items_title">Data to clear</string>
-    <string name="clear_on_exit_history">Browsing history</string>
+    <string name="clear_on_exit_history">历史浏览记录</string>
     <string name="clear_on_exit_cookies">Cookies and site data</string>
     <string name="clear_on_exit_cache">Cache</string>
     <string name="clear_on_exit_tabs">Open tabs</string>
@@ -2380,4 +2380,8 @@
     <string name="address_bar_link_copied">网页链接已复制到剪贴板</string>
     <string name="address_bar_paste">粘贴</string>
     <string name="address_bar_paste_and_go">粘贴并前往</string>
+    <string name="homepage_search_hint">搜索或输入网址</string>
+    <string name="custom_search_engine_title">自定义搜索引擎</string>
+    <string name="custom_search_engine_name">名称</string>
+    <string name="custom_search_engine_url">搜索网址 (URL)</string>
 </resources>
