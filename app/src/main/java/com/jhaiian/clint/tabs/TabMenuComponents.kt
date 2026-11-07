@@ -539,15 +539,26 @@ internal fun TabMenuSectionHeader(isIncognitoSection: Boolean, modifier: Modifie
     }
 }
 
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
-internal fun NewTabButton(text: String, iconRes: androidx.compose.ui.graphics.vector.ImageVector, modifier: Modifier = Modifier, onClick: () -> Unit) {
+internal fun NewTabButton(text: String, iconRes: androidx.compose.ui.graphics.vector.ImageVector, modifier: Modifier = Modifier, onLongClick: (() -> Unit)? = null, onClick: () -> Unit) {
     val colors = LocalClintColors.current
-    Button(
-        onClick = onClick,
-        modifier = modifier.height(44.dp),
-        shape = RoundedCornerShape(22.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = colors.buttonBackground, contentColor = colors.buttonTextColor),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 12.dp)
+    val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+    androidx.compose.foundation.layout.Row(
+        modifier = modifier
+            .height(44.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .background(colors.buttonBackground)
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick?.let { cb -> {
+                    haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                    cb()
+                } }
+            )
+            .padding(horizontal = 12.dp),
+        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.Center
     ) {
         Icon(iconRes, contentDescription = null, tint = colors.buttonIconTint, modifier = Modifier.size(18.dp))
         Text(text, fontSize = 13.sp, color = colors.buttonTextColor, modifier = Modifier.padding(start = 8.dp))

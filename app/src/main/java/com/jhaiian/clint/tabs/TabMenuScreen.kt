@@ -759,6 +759,7 @@ fun TabMenuScreen(activity: MainActivity, onDismiss: () -> Unit) {
                     text = stringResource(R.string.new_tab),
                     iconRes = Icons.Filled.Add,
                     modifier = Modifier.weight(1f).padding(end = 6.dp),
+                    onLongClick = { showProfilePicker = true },
                     onClick = { activity.onNewTab(); onDismiss() }
                 )
                 NewTabButton(

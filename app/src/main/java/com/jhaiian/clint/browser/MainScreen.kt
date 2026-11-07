@@ -555,6 +555,7 @@ private fun TabStripSlot(activity: MainActivity, state: MainUiState, onOpenTabGr
                 onCloseTab = { id -> activity.closeTabFromStrip(id) },
                 onCloseOtherTabs = { id -> activity.closeOtherTabsFromStrip(id) },
                 onNewTab = { activity.openNewTabFromStrip() },
+                onNewTabLongPress = { state.profilePickerOpen = true },
                 onNewTabInGroup = { groupId -> activity.openNewTabInGroup(groupId) },
                 onAddToNewGroup = { id -> state.tabStripNewGroupTabId = id },
                 onRemoveFromGroup = { id -> activity.removeTabFromGroup(id) },

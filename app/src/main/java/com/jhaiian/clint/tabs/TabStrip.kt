@@ -113,6 +113,7 @@ internal fun TabStrip(
     onCloseTab: (String) -> Unit,
     onCloseOtherTabs: (String) -> Unit,
     onNewTab: () -> Unit,
+    onNewTabLongPress: () -> Unit = {},
     onNewTabInGroup: (String) -> Unit,
     onAddToNewGroup: (String) -> Unit,
     onRemoveFromGroup: (String) -> Unit,
@@ -175,7 +176,13 @@ internal fun TabStrip(
                     }
                 }
             }
-            IconButton(onClick = onNewTab, modifier = Modifier.size(40.dp)) {
+            Box(
+                contentAlignment = androidx.compose.ui.Alignment.Center,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .combinedClickable(onClick = onNewTab, onLongClick = onNewTabLongPress)
+            ) {
                 Icon(
                     Icons.Filled.Add,
                     contentDescription = stringResource(if (state.isIncognito) R.string.new_incognito_tab else R.string.new_tab),
