@@ -446,7 +446,8 @@ private fun TopToolbar(
             onHomeClick = { activity.navGoHome() },
             onSwipeTabChange = { direction -> activity.onSwipeTabChange(direction) },
             onSiteInfoClick = { if (!activity.openSiteInfo()) activity.openSearchOverlay(isBottom = false) },
-            openTabsSwipeDirection = 1
+            openTabsSwipeDirection = 1,
+            onNewTabLongPress = { state.profilePickerOpen = true }
         )
         if (showTabGroupBar) TabGroupBarSlot(activity, state, onOpenTabGroup)
         PageLoadProgress(state)
@@ -648,7 +649,8 @@ private fun BottomToolbar(
             onSwipeTabChange = { direction -> activity.onSwipeTabChange(direction) },
             onSiteInfoClick = { if (!activity.openSiteInfo()) activity.openSearchOverlay(isBottom = true) },
             openTabsSwipeDirection = -1,
-            isBottomBar = true
+            isBottomBar = true,
+            onNewTabLongPress = { state.profilePickerOpen = true }
         )
     }
 }

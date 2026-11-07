@@ -1,4 +1,5 @@
 package com.jhaiian.clint.browser
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
@@ -96,6 +97,7 @@ internal fun AddressBarRow(
     onHomeClick: () -> Unit = {},
     openTabsSwipeDirection: Int = 0,
     isBottomBar: Boolean = false,
+    onNewTabLongPress: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val colors = LocalClintColors.current
@@ -363,10 +365,34 @@ internal fun AddressBarRow(
                 }
             }
         }
+        if (onNewTabLongPress != null) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .combinedClickable(
+                        onClick = { if (isIncognito) activity.onNewIncognitoTab() else activity.onNewTab() },
+                        onLongClickLabel = stringResource(if (isIncognito) R.string.new_incognito_tab else R.string.new_tab),
+                        onLongClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            if (isIncognito) activity.onNewIncognitoTab() else onNewTabLongPress()
+                        }
+                    )
+            ) {
+                Icon(
+                    imageVector = androidx.compose.material.icons.Icons.Filled.Add,
+                    contentDescription = stringResource(R.string.new_tab),
+                    tint = colors.onSurface,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(start = 10.dp)
+                .padding(start = if (onNewTabLongPress != null) 6.dp else 10.dp)
                 .size(26.dp)
                 .border(1.75.dp, colors.onSurface.copy(alpha = 0.85f), RoundedCornerShape(6.dp))
                 .combinedClickable(
