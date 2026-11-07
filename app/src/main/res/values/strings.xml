@@ -2428,7 +2428,6 @@
     <string name="cloud_backup_test_invalid_url">The server address is not valid</string>
     <string name="cloud_backup_now">Back up now</string>
     <string name="cloud_backup_running">Backing up…</string>
-    <string name="cloud_backup_started">Cloud backup started</string>
     <string name="cloud_backup_auto_title">Back up automatically every day</string>
     <string name="cloud_backup_auto_summary">Uploads a full backup at 12:00 every day when connected</string>
     <string name="cloud_backup_keep_count">Keep at most (copies)</string>

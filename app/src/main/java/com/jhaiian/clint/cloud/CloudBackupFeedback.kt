@@ -1,7 +1,6 @@
 package com.jhaiian.clint.cloud
 
 import android.Manifest
-import android.app.ActivityManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -15,6 +14,8 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.jhaiian.clint.R
 
 /** Turns every cloud backup outcome into user-visible feedback: a toast in the foreground, a notification otherwise. */
@@ -22,15 +23,21 @@ object CloudBackupFeedback {
     const val CHANNEL_ID = "clint_cloud_backup"
     private const val NOTIFICATION_ID = 0x0C10D
 
-    fun deliver(context: Context, report: CloudBackupReport) {
+    /**
+     * Manual runs: toast while the app is on screen, notification otherwise.
+     * Scheduled (daily) runs are background runs: always a notification, plus a toast if the app is on screen.
+     */
+    fun deliver(context: Context, report: CloudBackupReport, scheduled: Boolean) {
         val appContext = context.applicationContext
         val message = message(appContext, report.outcome, report.sizeBytes, report.httpCode, report.detail)
-        if (isAppInForeground()) {
-            Handler(Looper.getMainLooper()).post {
+        Handler(Looper.getMainLooper()).post {
+            val visible = isAppVisible()
+            if (visible) {
                 Toast.makeText(appContext, message, Toast.LENGTH_LONG).show()
             }
-        } else {
-            notify(appContext, report.outcome, message)
+            if (scheduled || !visible) {
+                notify(appContext, report.outcome, message)
+            }
         }
     }
 
@@ -80,11 +87,9 @@ object CloudBackupFeedback {
         }
     }
 
-    private fun isAppInForeground(): Boolean {
-        val info = ActivityManager.RunningAppProcessInfo()
-        ActivityManager.getMyMemoryState(info)
-        return info.importance <= ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
-    }
+    /** Must be called on the main thread. Process importance is not usable here: a running job raises it even in the background. */
+    private fun isAppVisible(): Boolean =
+        ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
 
     fun ensureChannel(context: Context) {
         val nm = context.getSystemService(NotificationManager::class.java) ?: return

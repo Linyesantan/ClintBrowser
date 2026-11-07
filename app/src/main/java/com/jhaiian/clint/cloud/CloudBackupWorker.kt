@@ -22,7 +22,7 @@ class CloudBackupWorker(appContext: Context, params: WorkerParameters) : Corouti
             CloudBackupReport(CloudBackupOutcome.BACKUP_FAILED, detail = e.message ?: e.javaClass.simpleName)
         }
         CloudBackupManager.recordStatus(applicationContext, report)
-        CloudBackupFeedback.deliver(applicationContext, report)
+        CloudBackupFeedback.deliver(applicationContext, report, scheduled)
         if (scheduled && WebDavSettings.isAutoBackupEnabled(applicationContext)) {
             CloudBackupScheduler.scheduleNextDaily(applicationContext, fromWorker = true)
         }

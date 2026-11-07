@@ -134,7 +134,6 @@ fun CloudBackupSection(onRestoreFromCloud: () -> Unit) {
 
     val testSuccessText = stringResource(R.string.cloud_backup_test_success)
     val notConfiguredText = stringResource(R.string.cloud_backup_msg_not_configured)
-    val startedText = stringResource(R.string.cloud_backup_started)
 
     fun testConnection() {
         val config = WebDavSettings.Config(serverUrl.trim(), username.trim(), password)
@@ -207,7 +206,6 @@ fun CloudBackupSection(onRestoreFromCloud: () -> Unit) {
                     onClick = {
                         ensureNotificationPermission()
                         CloudBackupScheduler.runNow(context)
-                        Toast.makeText(context, startedText, Toast.LENGTH_SHORT).show()
                     },
                     enabled = !backingUp,
                     modifier = Modifier.weight(1f),

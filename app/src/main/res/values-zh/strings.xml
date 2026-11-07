@@ -2428,7 +2428,6 @@
     <string name="cloud_backup_test_invalid_url">服务器地址无效</string>
     <string name="cloud_backup_now">立即备份</string>
     <string name="cloud_backup_running">正在备份…</string>
-    <string name="cloud_backup_started">已开始云端备份</string>
     <string name="cloud_backup_auto_title">每天自动备份</string>
     <string name="cloud_backup_auto_summary">每天 12:00 在联网时自动上传完整备份</string>
     <string name="cloud_backup_keep_count">最多保留份数</string>
