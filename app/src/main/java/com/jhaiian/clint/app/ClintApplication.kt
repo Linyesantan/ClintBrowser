@@ -30,6 +30,7 @@ class ClintApplication : Application() {
         com.jhaiian.clint.privacy.PrivacyGuard.install(this)
         com.jhaiian.clint.downloads.ClintDownloadManager.init(this)
         com.jhaiian.clint.quiver.QuiverGuardAutoUpdater.schedule(this)
+        com.jhaiian.clint.automation.RemoteAutomation.init(this)
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
             override fun onActivityStarted(activity: Activity) {}

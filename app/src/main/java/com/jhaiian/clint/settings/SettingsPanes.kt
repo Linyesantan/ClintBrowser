@@ -1089,6 +1089,68 @@ fun MiscPane(activity: SettingsActivity) {
         activity.startActivity(intent)
     }
 
+    val automationPrefs = remember { PreferenceManager.getDefaultSharedPreferences(activity) }
+    val automationState = remember {
+        com.jhaiian.clint.settings.misc.RemoteAutomationUiState(
+            enabled = com.jhaiian.clint.automation.RemoteAutomation.isEnabled(activity),
+            loopbackOnly = com.jhaiian.clint.automation.RemoteAutomation.loopbackOnly(activity),
+            cdp = com.jhaiian.clint.automation.RemoteAutomation.cdpEnabled(activity),
+            token = com.jhaiian.clint.automation.RemoteAutomation.token(activity),
+            port = com.jhaiian.clint.automation.RemoteAutomation.port(activity),
+            relayUrl = com.jhaiian.clint.automation.RemoteAutomation.relayUrl(activity)
+        )
+    }
+    val automationStatus by com.jhaiian.clint.automation.RemoteAutomation.status.collectAsState()
+    val automationLan = remember(automationStatus.server, automationStatus.loopbackOnly, automationStatus.commandCount) {
+        com.jhaiian.clint.automation.RemoteAutomation.lanAddresses()
+    }
+    fun applyAutomation() {
+        com.jhaiian.clint.automation.RemoteAutomation.apply(activity)
+        automationState.token = com.jhaiian.clint.automation.RemoteAutomation.token(activity)
+    }
+    val automationActions = remember {
+        com.jhaiian.clint.settings.misc.RemoteAutomationActions(
+            onToggleEnabled = {
+                val on = !automationState.enabled
+                automationState.enabled = on
+                automationPrefs.edit().putBoolean(com.jhaiian.clint.automation.RemoteAutomation.PREF_ENABLED, on).commit()
+                applyAutomation()
+                android.widget.Toast.makeText(activity,
+                    if (on) R.string.remote_automation_enabled_toast else R.string.remote_automation_disabled_toast,
+                    android.widget.Toast.LENGTH_SHORT).show()
+            },
+            onToggleLoopback = {
+                automationState.loopbackOnly = !automationState.loopbackOnly
+                automationPrefs.edit().putBoolean(com.jhaiian.clint.automation.RemoteAutomation.PREF_LOOPBACK_ONLY, automationState.loopbackOnly).commit()
+                applyAutomation()
+            },
+            onToggleCdp = {
+                automationState.cdp = !automationState.cdp
+                automationPrefs.edit().putBoolean(com.jhaiian.clint.automation.RemoteAutomation.PREF_CDP, automationState.cdp).commit()
+                applyAutomation()
+            },
+            onCopyToken = {
+                val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                clipboard.setPrimaryClip(android.content.ClipData.newPlainText("Clint", automationState.token))
+                android.widget.Toast.makeText(activity, R.string.remote_automation_token_copied, android.widget.Toast.LENGTH_SHORT).show()
+            },
+            onRegenerateToken = {
+                automationState.token = com.jhaiian.clint.automation.RemoteAutomation.regenerateToken(activity)
+                android.widget.Toast.makeText(activity, R.string.remote_automation_token_regenerated, android.widget.Toast.LENGTH_SHORT).show()
+            },
+            onPortChange = { port ->
+                automationState.port = port
+                automationPrefs.edit().putInt(com.jhaiian.clint.automation.RemoteAutomation.PREF_PORT, port).commit()
+                applyAutomation()
+            },
+            onRelayChange = { url ->
+                automationState.relayUrl = url
+                automationPrefs.edit().putString(com.jhaiian.clint.automation.RemoteAutomation.PREF_RELAY_URL, url).commit()
+                applyAutomation()
+            }
+        )
+    }
+
     MiscScreen(
         state = uiState,
         onDefaultBrowserClick = { openDefaultBrowserPicker() },
@@ -1096,7 +1158,11 @@ fun MiscPane(activity: SettingsActivity) {
         onRerunSetupConfirm = {
             uiState.rerunSetupConfirmDialogOpen = false
             rerunSetup()
-        }
+        },
+        automation = automationState,
+        automationStatus = automationStatus,
+        automationLanAddresses = automationLan,
+        automationActions = automationActions
     )
 }
 

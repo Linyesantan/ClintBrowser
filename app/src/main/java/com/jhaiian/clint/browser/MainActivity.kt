@@ -474,6 +474,7 @@ class MainActivity : ClintActivity(), OverlayHostActivity, SnackbarHostActivity,
     override fun onResume() {
         super.onResume()
         if (isFinishing) return
+        com.jhaiian.clint.automation.RemoteAutomation.attach(this)
         ClintDownloadManager.resumeTimeoutPaused(this)
         refreshBackgroundPlaybackVisibility()
         syncFramelessShortcuts()
@@ -532,6 +533,7 @@ class MainActivity : ClintActivity(), OverlayHostActivity, SnackbarHostActivity,
     }
 
     override fun onDestroy() {
+        com.jhaiian.clint.automation.RemoteAutomation.detach(this)
         prefs.unregisterOnSharedPreferenceChangeListener(prefsListener)
         DataSaverMode.onActiveChanged = null
         teardownTranslations()
