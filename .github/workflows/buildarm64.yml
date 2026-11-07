@@ -45,19 +45,20 @@ jobs:
         run: chmod +x gradlew
 
       - name: Setup Signing Keystore
+        env:
+          SIGNING_KEY: ${{ secrets.BASE_64_SIGNING_KEY }}
+          LOCAL_PROPS: ${{ secrets.LOCAL_PROPERTIES }}
         run: |
-          if [ -n "${{ secrets.BASE_64_SIGNING_KEY }}" ]; then
-            printf '%s' "${{ secrets.BASE_64_SIGNING_KEY }}" | tr -d '\n' | base64 -d > app/release_keystore.jks
-            printf '%s\n' "${{ secrets.LOCAL_PROPERTIES }}" > local.properties
+          if [ -n "$SIGNING_KEY" ]; then
+            printf '%s' "$SIGNING_KEY" | tr -d '\n' | base64 -d > app/release_keystore.jks
+            printf '%s\n' "$LOCAL_PROPS" > local.properties
           else
             echo "Generating fallback build keystore..."
             keytool -genkeypair -v -keystore app/release_keystore.jks -alias clint -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=Clint, OU=Clint, O=Clint, L=Clint, S=Clint, C=US"
-            cat <<EOF > local.properties
-signingConfig.storeFile=app/release_keystore.jks
-signingConfig.storePassword=123456
-signingConfig.keyAlias=clint
-signingConfig.keyPassword=123456
-EOF
+            echo "signingConfig.storeFile=app/release_keystore.jks" > local.properties
+            echo "signingConfig.storePassword=123456" >> local.properties
+            echo "signingConfig.keyAlias=clint" >> local.properties
+            echo "signingConfig.keyPassword=123456" >> local.properties
           fi
 
       - name: Build GitHub Release APKs
