@@ -1,0 +1,22 @@
+# frpc 配置模板（frp >= 0.52 的 TOML 格式）。复制为 frpc.toml 后替换尖括号占位符。
+#   pkg install frp   (或从 GitHub Releases 下载 android_arm64 版本)
+#   frpc -c frpc.toml
+serverAddr = "<FRPS_HOST>"
+serverPort = 7000
+auth.method = "token"
+auth.token = "<FRPS_AUTH_TOKEN>"
+
+[[proxies]]
+name = "clint-automation"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 9333
+remotePort = <REMOTE_PORT>
+
+# 若 frps 配了 vhostHTTPPort 和域名，也可以改用 http 类型：
+# [[proxies]]
+# name = "clint-automation"
+# type = "http"
+# localIP = "127.0.0.1"
+# localPort = 9333
+# customDomains = ["<YOUR_DOMAIN>"]
