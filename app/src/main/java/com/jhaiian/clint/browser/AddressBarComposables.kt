@@ -138,7 +138,7 @@ internal fun AddressBarRow(
         }
     }
     Row(
-        modifier = modifier.fillMaxWidth().padding(start = 8.dp, end = 2.dp, top = 6.dp, bottom = 6.dp),
+        modifier = modifier.fillMaxWidth().padding(start = 8.dp, end = 0.dp, top = 6.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (isIncognito) {
@@ -413,13 +413,14 @@ internal fun AddressBarRow(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(24.dp)
-                    .border(1.75.dp, toolbarTint, RoundedCornerShape(6.dp))
+                    .size(18.dp)
+                    .border(1.75.dp, toolbarTint, RoundedCornerShape(4.5.dp))
             ) {
                 Text(
                     text = tabCountText,
                     color = toolbarTint,
-                    fontSize = 12.sp,
+                    fontSize = 11.sp,
+                    lineHeight = 11.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
