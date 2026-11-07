@@ -138,7 +138,7 @@ internal fun AddressBarRow(
         }
     }
     Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp),
+        modifier = modifier.fillMaxWidth().padding(start = 8.dp, end = 2.dp, top = 6.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (isIncognito) {
@@ -365,16 +365,21 @@ internal fun AddressBarRow(
                 }
             }
         }
+        // Chrome-style right-hand toolbar: three equal 48dp slots (+, tab count, menu),
+        // same neutral tint, unbounded circular ripple, no extra gaps between them.
+        val toolbarTint = colors.onSurface
+        val toolbarRipple = androidx.compose.material3.ripple(bounded = false, radius = 24.dp)
         if (onNewTabLongPress != null) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .padding(start = 4.dp)
-                    .size(40.dp)
-                    .clip(CircleShape)
+                    .size(48.dp)
                     .combinedClickable(
+                        interactionSource = null,
+                        indication = toolbarRipple,
+                        onClickLabel = stringResource(if (isIncognito) R.string.new_incognito_tab else R.string.new_tab),
                         onClick = { if (isIncognito) activity.onNewIncognitoTab() else activity.onNewTab() },
-                        onLongClickLabel = stringResource(if (isIncognito) R.string.new_incognito_tab else R.string.new_tab),
                         onLongClick = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             if (isIncognito) activity.onNewIncognitoTab() else onNewTabLongPress()
@@ -384,7 +389,7 @@ internal fun AddressBarRow(
                 Icon(
                     imageVector = androidx.compose.material.icons.Icons.Filled.Add,
                     contentDescription = stringResource(R.string.new_tab),
-                    tint = colors.onSurface,
+                    tint = toolbarTint,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -392,10 +397,11 @@ internal fun AddressBarRow(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(start = if (onNewTabLongPress != null) 6.dp else 10.dp)
-                .size(26.dp)
-                .border(1.75.dp, colors.onSurface.copy(alpha = 0.85f), RoundedCornerShape(6.dp))
+                .padding(start = if (onNewTabLongPress != null) 0.dp else 4.dp)
+                .size(48.dp)
                 .combinedClickable(
+                    interactionSource = null,
+                    indication = toolbarRipple,
                     onClick = onTabCountClick,
                     onLongClickLabel = stringResource(if (isIncognito) R.string.new_incognito_tab else R.string.new_tab),
                     onLongClick = {
@@ -404,16 +410,23 @@ internal fun AddressBarRow(
                     }
                 )
         ) {
-            Text(
-                text = tabCountText,
-                color = colors.onSurface,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(24.dp)
+                    .border(1.75.dp, toolbarTint, RoundedCornerShape(6.dp))
+            ) {
+                Text(
+                    text = tabCountText,
+                    color = toolbarTint,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
-        Box(modifier = Modifier.padding(start = 4.dp).size(40.dp), contentAlignment = Alignment.Center) {
-            com.jhaiian.clint.browser.menu.MenuTriggerButton(activity)
+        Box(modifier = Modifier.size(48.dp), contentAlignment = Alignment.Center) {
+            com.jhaiian.clint.browser.menu.MenuTriggerButton(activity, tint = toolbarTint)
         }
     }
 }

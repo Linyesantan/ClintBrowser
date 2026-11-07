@@ -280,7 +280,11 @@ internal fun MainActivity.buildMenuActions(dismiss: () -> Unit): BrowserMenuActi
 )
 
 @Composable
-internal fun MenuTriggerButton(activity: MainActivity, modifier: Modifier = Modifier) {
+internal fun MenuTriggerButton(
+    activity: MainActivity,
+    modifier: Modifier = Modifier,
+    tint: androidx.compose.ui.graphics.Color? = null
+) {
     var expanded by remember { mutableStateOf(false) }
     var snapshot by remember { mutableStateOf<BrowserMenuSnapshot?>(null) }
     val colors = LocalClintColors.current
@@ -303,7 +307,7 @@ internal fun MenuTriggerButton(activity: MainActivity, modifier: Modifier = Modi
             Icon(
                 imageVector = androidx.compose.material.icons.Icons.Filled.MoreVert,
                 contentDescription = stringResource(R.string.menu),
-                tint = colors.iconTint
+                tint = tint ?: colors.iconTint
             )
         }
 
