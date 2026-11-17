@@ -2495,4 +2495,12 @@
     <string name="bookmark_sync_reset_title">Reset sync state</string>
     <string name="bookmark_sync_reset_summary">Forget the last sync; the next one works like the first: merge both sides, add only, never delete</string>
     <string name="bookmark_sync_reset_done">Reset. The next sync only adds</string>
+    <string name="network_switch_section">Network</string>
+    <string name="network_switch_recovery_title">Recover after network switch</string>
+    <string name="network_switch_recovery_summary">When the network or VPN changes, offer to restart the browser engine; if it changed while Clint was in the background, restart quietly on return (tabs are restored)</string>
+    <string name="network_switch_restart_title">Restart browser engine</string>
+    <string name="network_switch_restart_summary">Clears stuck connections after switching VPN or network. Open tabs are restored; incognito tabs are closed</string>
+    <string name="network_switch_snackbar">Network changed. Pages not loading?</string>
+    <string name="network_switch_restart_action">Restart engine</string>
+    <string name="network_switch_restarted">Browser engine restarted</string>
 </resources>

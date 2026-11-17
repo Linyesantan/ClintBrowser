@@ -107,6 +107,8 @@ fun MiscScreen(
             )
         }
 
+        NetworkRecoverySection()
+
         RemoteAutomationSection(
             state = automation,
             status = automationStatus,
