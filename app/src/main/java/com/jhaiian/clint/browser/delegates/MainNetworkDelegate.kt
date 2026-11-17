@@ -1,14 +1,10 @@
 package com.jhaiian.clint.browser.delegates
 
 import androidx.lifecycle.Lifecycle
-import com.jhaiian.clint.R
 import com.jhaiian.clint.browser.MainActivity
 import com.jhaiian.clint.browser.network.BrowserEngineRestart
 import com.jhaiian.clint.browser.network.NetworkSwitchMonitor
 import com.jhaiian.clint.downloads.ClintDownloadManager
-import com.jhaiian.clint.ui.showClintSnackbar
-
-private const val NETWORK_SWITCH_SNACKBAR_TIMEOUT_MS = 10_000L
 
 internal fun MainActivity.startNetworkSwitchMonitor() {
     if (networkSwitchMonitor != null) return
@@ -29,12 +25,9 @@ private fun MainActivity.onNetworkSwitched(@Suppress("UNUSED_PARAMETER") change:
     }, 300)
 
     if (!prefs.getBoolean(BrowserEngineRestart.PREF_NETWORK_SWITCH_RECOVERY, BrowserEngineRestart.DEFAULT_NETWORK_SWITCH_RECOVERY)) return
+    // Silent recovery: no UI. In the foreground restart right away; in the background restart on return.
     if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-        showClintSnackbar(
-            getString(R.string.network_switch_snackbar),
-            getString(R.string.network_switch_restart_action),
-            timeoutMs = NETWORK_SWITCH_SNACKBAR_TIMEOUT_MS
-        ) { restartBrowserEngine() }
+        if (canRestartEngineQuietly()) restartBrowserEngine()
     } else {
         pendingEngineRestart = true
     }
@@ -44,14 +37,7 @@ private fun MainActivity.onNetworkSwitched(@Suppress("UNUSED_PARAMETER") change:
 internal fun MainActivity.consumePendingEngineRestart(): Boolean {
     if (!pendingEngineRestart) return false
     pendingEngineRestart = false
-    if (!canRestartEngineQuietly()) {
-        showClintSnackbar(
-            getString(R.string.network_switch_snackbar),
-            getString(R.string.network_switch_restart_action),
-            timeoutMs = NETWORK_SWITCH_SNACKBAR_TIMEOUT_MS
-        ) { restartBrowserEngine() }
-        return false
-    }
+    if (!canRestartEngineQuietly()) return false
     restartBrowserEngine()
     return true
 }

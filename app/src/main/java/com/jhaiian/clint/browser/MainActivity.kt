@@ -395,9 +395,6 @@ class MainActivity : ClintActivity(), OverlayHostActivity, SnackbarHostActivity,
         applyAddressBarPosition()
         val isEngineRestart = intent.getBooleanExtra(com.jhaiian.clint.browser.network.BrowserEngineRestart.EXTRA_ENGINE_RESTART, false)
         if (savedInstanceState == null && !isEngineRestart && com.jhaiian.clint.privacy.PrivacyPrefs.closesTabsOnExit(prefs)) discardSavedTabs()
-        if (savedInstanceState == null && isEngineRestart) {
-            window.decorView.postDelayed({ showClintSnackbar(getString(R.string.network_switch_restarted)) }, 600)
-        }
         com.jhaiian.clint.privacy.IncognitoNotification.closeTabsHandler = closeIncognitoTabsHandler
         val isRefreshLinkMode = intent.getBooleanExtra(EXTRA_REFRESH_LINK_MODE, false)
         val shortcutId = intent.getStringExtra(EXTRA_SHORTCUT_ID)

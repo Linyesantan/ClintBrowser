@@ -2494,12 +2494,9 @@
     <string name="bookmark_sync_reset_done">已重置，下次同步只增不删</string>
     <string name="network_switch_section">网络</string>
     <string name="network_switch_recovery_title">网络切换后自动恢复</string>
-    <string name="network_switch_recovery_summary">网络或 VPN 变化时提示重启浏览器内核；若切换发生在 Clint 处于后台时，回到前台会静默重启（标签页自动恢复）</string>
+    <string name="network_switch_recovery_summary">网络或 VPN 变化时静默重启浏览器内核，页面自动重连（标签页会恢复；有无痕标签页、下载或后台播放时跳过）</string>
     <string name="network_switch_restart_title">重启浏览器内核</string>
     <string name="network_switch_restart_summary">切换 VPN 或网络后页面卡在离线时使用。普通标签页会恢复，无痕标签页会关闭</string>
-    <string name="network_switch_snackbar">网络已切换，页面连不上？</string>
-    <string name="network_switch_restart_action">重启内核</string>
-    <string name="network_switch_restarted">浏览器内核已重启</string>
     <string name="link_open_new_incognito_tab">在新无痕标签页中打开</string>
     <string name="link_open_new_incognito_tab_background">在后台新无痕标签页中打开</string>
 </resources>
