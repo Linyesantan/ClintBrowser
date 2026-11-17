@@ -33,6 +33,10 @@ class AutomationCommandExecutor {
 
     private class ApiException(val status: Int, message: String) : Exception(message)
 
+    private companion object {
+        const val BACKGROUND_JS_TIMEOUT_MS = 5_000L
+    }
+
     fun execute(context: Context, request: AutomationRequest): AutomationResponse {
         return try {
             route(context, request)
@@ -109,13 +113,58 @@ class AutomationCommandExecutor {
         .put("profileId", tab.profileId)
         .put("groupId", tab.groupId ?: JSONObject.NULL)
 
+    /**
+     * Background tabs are paused (WebView.onPause) by syncTabPlayback, and a paused WebView never
+     * calls back from evaluateJavascript. Resume such a tab just for the call and pause it again
+     * afterwards; if it still does not answer, fail fast with 409 instead of burning the full timeout.
+     */
     private fun runJs(tabId: String?, js: String, timeoutMs: Long = 15_000): Any? {
         val activity = requireActivity()
-        val raw: String? = onMain(timeoutMs) { complete ->
-            val tab = activity.findTab(tabId)
-            tab.webView.evaluateJavascript(js) { value -> complete(value) }
+        val latch = CountDownLatch(1)
+        val result = AtomicReference<String?>()
+        val error = AtomicReference<Throwable?>()
+        val resumed = AtomicReference<BrowserTab?>()
+        main.post {
+            try {
+                val tab = activity.findTab(tabId)
+                if (tab.id != activity.tabManager.activeTab?.id) {
+                    if (tab.pendingUrl != null) {
+                        throw ApiException(409, "tab ${tab.id} has not loaded yet; POST /activate it first")
+                    }
+                    tab.webView.onResume()
+                    resumed.set(tab)
+                }
+                tab.webView.evaluateJavascript(js) { value -> result.set(value); latch.countDown() }
+            } catch (t: Throwable) {
+                error.set(t); latch.countDown()
+            }
         }
-        return parseJsValue(raw)
+        try {
+            // A resumed background tab gets a shorter leash so a sleeping page fails fast.
+            var done = latch.await(minOf(timeoutMs, BACKGROUND_JS_TIMEOUT_MS), TimeUnit.MILLISECONDS)
+            if (!done && resumed.get() != null) {
+                throw ApiException(409, "background tab did not respond; POST /activate it first")
+            }
+            if (!done && timeoutMs > BACKGROUND_JS_TIMEOUT_MS) {
+                done = latch.await(timeoutMs - BACKGROUND_JS_TIMEOUT_MS, TimeUnit.MILLISECONDS)
+            }
+            if (!done) throw TimeoutException("timed out waiting for the browser")
+        } finally {
+            resumed.get()?.let { tab -> main.post { repauseIfBackground(activity, tab) } }
+        }
+        error.get()?.let { throw it }
+        return parseJsValue(result.get())
+    }
+
+    /** Mirrors syncTabPlayback: a tab that is still in the background and not playing media goes back to sleep. */
+    private fun repauseIfBackground(activity: MainActivity, tab: BrowserTab) {
+        try {
+            if (tab.id == activity.tabManager.activeTab?.id) return
+            if (activity.tabManager.tabs.none { it.id == tab.id }) return
+            if (activity.backgroundPlaybackTracker.isPlaying(tab.id)) return
+            tab.webView.onPause()
+        } catch (_: Throwable) {
+        }
     }
 
     private fun parseJsValue(raw: String?): Any? {

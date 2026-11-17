@@ -10,7 +10,10 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.net.URLDecoder
 import java.security.MessageDigest
-import java.util.concurrent.LinkedBlockingQueue
+import java.net.SocketTimeoutException
+import java.util.concurrent.RejectedExecutionException
+import java.util.concurrent.Semaphore
+import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
@@ -44,7 +47,14 @@ internal fun tokenMatches(provided: String?, expected: String): Boolean {
     return MessageDigest.isEqual(provided.toByteArray(Charsets.UTF_8), expected.toByteArray(Charsets.UTF_8))
 }
 
-/** Minimal HTTP/1.1 server (one request per connection) for the automation API. */
+/**
+ * Minimal HTTP/1.1 server (one request per connection) for the automation API.
+ *
+ * Every connection gets its own worker thread right away (no hidden queue), so a slow command
+ * never delays /ping or /status. Commands that touch the browser are limited to
+ * [MAX_COMMANDS] at a time; a request that cannot get a slot within [COMMAND_WAIT_MS] or whose
+ * client already hung up is dropped, and a full pool answers 503 instead of queuing silently.
+ */
 class AutomationHttpServer(
     val port: Int,
     val loopbackOnly: Boolean,
@@ -52,17 +62,22 @@ class AutomationHttpServer(
 ) {
     @Volatile private var serverSocket: ServerSocket? = null
     @Volatile private var running = false
-    private val pool = ThreadPoolExecutor(1, 8, 30, TimeUnit.SECONDS, LinkedBlockingQueue(32))
+    // Recreated on every start() so stop()/start() (toggling the switch) always gets a live pool.
+    @Volatile private var pool: ThreadPoolExecutor? = null
+    private val commandSlots = Semaphore(MAX_COMMANDS, true)
 
     fun start(onResult: (String?) -> Unit) {
         running = true
+        val workers = ThreadPoolExecutor(0, MAX_CONNECTIONS, 30, TimeUnit.SECONDS, SynchronousQueue())
+        pool?.shutdownNow()
+        pool = workers
         Thread({
             val ss = try {
                 ServerSocket().apply {
                     reuseAddress = true
                     val address = if (loopbackOnly) InetSocketAddress(InetAddress.getByName("127.0.0.1"), port)
                     else InetSocketAddress(port)
-                    bind(address, 16)
+                    bind(address, BACKLOG)
                 }
             } catch (e: Throwable) {
                 running = false
@@ -75,7 +90,9 @@ class AutomationHttpServer(
             while (running) {
                 val socket = try { ss.accept() } catch (_: Throwable) { break }
                 try {
-                    pool.execute { serve(socket) }
+                    workers.execute { serve(socket) }
+                } catch (_: RejectedExecutionException) {
+                    rejectBusy(socket)
                 } catch (_: Throwable) {
                     try { socket.close() } catch (_: Throwable) {}
                 }
@@ -87,7 +104,35 @@ class AutomationHttpServer(
         running = false
         try { serverSocket?.close() } catch (_: Throwable) {}
         serverSocket = null
-        pool.shutdownNow()
+        pool?.shutdownNow()
+        pool = null
+    }
+
+    /** Every worker is busy: answer 503 right away instead of letting the connection hang. */
+    private fun rejectBusy(socket: Socket) {
+        try {
+            socket.soTimeout = 1_000
+            write(socket, AutomationResponse.error(503, "busy: too many open connections, retry shortly"))
+            socket.shutdownOutput()
+        } catch (_: Throwable) {
+        } finally {
+            try { socket.close() } catch (_: Throwable) {}
+        }
+    }
+
+    /** True when the client has already closed its side (the request body was read in full). */
+    private fun clientGone(socket: Socket): Boolean {
+        val previous = socket.soTimeout
+        return try {
+            socket.soTimeout = 1
+            socket.getInputStream().read() < 0
+        } catch (_: SocketTimeoutException) {
+            false
+        } catch (_: Throwable) {
+            true
+        } finally {
+            try { socket.soTimeout = previous } catch (_: Throwable) {}
+        }
     }
 
     private fun serve(socket: Socket) {
@@ -131,8 +176,21 @@ class AutomationHttpServer(
                 } catch (_: Throwable) {
                     write(s, AutomationResponse.error(400, "body must be a JSON object")); return
                 }
-                val response = handler(AutomationRequest(method, path, query, headers, body, authenticated))
-                write(s, response)
+                val request = AutomationRequest(method, path, query, headers, body, authenticated)
+                // Liveness/status never touch the browser: answer them without waiting for a slot.
+                if (path in LIGHT_PATHS) {
+                    write(s, handler(request)); return
+                }
+                if (!commandSlots.tryAcquire(COMMAND_WAIT_MS, TimeUnit.MILLISECONDS)) {
+                    write(s, AutomationResponse.error(503, "busy: $MAX_COMMANDS commands already running, retry shortly"))
+                    return
+                }
+                try {
+                    if (clientGone(s)) return
+                    write(s, handler(request))
+                } finally {
+                    commandSlots.release()
+                }
             } catch (_: Throwable) {
             }
         }
@@ -203,5 +261,10 @@ class AutomationHttpServer(
     private companion object {
         const val MAX_HEAD = 64 * 1024
         const val MAX_BODY = 4 * 1024 * 1024
+        const val BACKLOG = 50
+        const val MAX_CONNECTIONS = 16
+        const val MAX_COMMANDS = 4
+        const val COMMAND_WAIT_MS = 5_000L
+        val LIGHT_PATHS = setOf("/ping", "/status", "/")
     }
 }
