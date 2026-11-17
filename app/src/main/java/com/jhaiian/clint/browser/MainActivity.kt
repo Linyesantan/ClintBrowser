@@ -776,6 +776,34 @@ class MainActivity : ClintActivity(), OverlayHostActivity, SnackbarHostActivity,
             initialName = tab.title.ifBlank { url }
         )
     }
+    fun onMenuSavePage() {
+        val wv = tabManager.activeTab?.webView ?: return
+        val url = wv.url
+        if (url.isNullOrEmpty() || isClintHomeUrl(url)) return
+        val title = (tabManager.activeTab?.title ?: "").ifBlank {
+            runCatching { android.net.Uri.parse(url).host }.getOrNull() ?: "page"
+        }
+        val filename = com.jhaiian.clint.downloads.DownloadFileHelper.sanitizeFileName(title).take(120) + ".mhtml"
+        val tmp = runCatching {
+            val dir = java.io.File(cacheDir, "clint_blobs").apply { mkdirs() }
+            java.io.File.createTempFile("page_", ".mhtml", dir)
+        }.getOrNull()
+        if (tmp == null) {
+            android.widget.Toast.makeText(this, R.string.menu_save_page_failed, android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        wv.saveWebArchive(tmp.absolutePath, false) { path ->
+            val saved = path?.let { java.io.File(it) }?.takeIf { it.isFile && it.length() > 0L }
+            if (saved == null) {
+                runCatching { tmp.delete() }
+                android.widget.Toast.makeText(this, R.string.menu_save_page_failed, android.widget.Toast.LENGTH_SHORT).show()
+            } else if (isFinishing || isDestroyed) {
+                com.jhaiian.clint.downloads.ClintDownloadManager.enqueueBlob(applicationContext, saved, filename, "multipart/related")
+            } else {
+                showDownloadDialogForBlob(saved, filename, "multipart/related", forceQuick = true)
+            }
+        }
+    }
     fun onMenuDownloads() { startActivity(android.content.Intent(this, com.jhaiian.clint.downloads.DownloadsActivity::class.java)) }
     fun onMenuBookmarks() { startActivity(android.content.Intent(this, com.jhaiian.clint.bookmarks.BookmarksActivity::class.java)) }
     fun onMenuHistory() { startActivity(android.content.Intent(this, com.jhaiian.clint.history.HistoryActivity::class.java)) }

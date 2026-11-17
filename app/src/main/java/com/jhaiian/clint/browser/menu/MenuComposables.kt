@@ -121,6 +121,7 @@ internal data class BrowserMenuSnapshot(
     val quiverGuardBlockedCount: Long,
     val isWebsiteBlockerEnabled: Boolean,
     val canCreateShortcut: Boolean,
+    val canSavePage: Boolean,
     val canUseCookiesControl: Boolean,
     val canTranslatePage: Boolean,
     val isPageTranslated: Boolean,
@@ -135,6 +136,7 @@ internal class BrowserMenuActions(
     val onHome: () -> Unit,
     val onRefreshOrStop: () -> Unit,
     val onToggleBookmark: () -> Unit,
+    val onSavePage: () -> Unit,
     val onNewTab: () -> Unit,
     val onIncognito: () -> Unit,
     val onNewProfileTab: () -> Unit,
@@ -201,6 +203,7 @@ internal fun MainActivity.buildMenuSnapshot(previous: BrowserMenuSnapshot?): Bro
         quiverGuardBlockedCount = tabManager.activeTab?.id?.let { BlockedRequestCounter.getTabCount(it) } ?: 0L,
         isWebsiteBlockerEnabled = prefs.getBoolean("website_blocker_enabled", false),
         canCreateShortcut = currentUrl.isNotEmpty(),
+        canSavePage = currentUrl.isNotEmpty() && !com.jhaiian.clint.browser.home.isClintHomeUrl(currentUrl),
         canUseCookiesControl = tabManager.activeTab?.isIncognito == false &&
             (currentUrl.startsWith("http://") || currentUrl.startsWith("https://")),
         canTranslatePage = currentUrl.startsWith("http://") || currentUrl.startsWith("https://"),
@@ -244,6 +247,7 @@ internal fun MainActivity.buildMenuActions(dismiss: () -> Unit): BrowserMenuActi
     onHome = { dismiss(); onMenuHome() },
     onRefreshOrStop = { dismiss(); onMenuRefreshOrStop() },
     onToggleBookmark = { dismiss(); onMenuToggleBookmark() },
+    onSavePage = { dismiss(); onMenuSavePage() },
     onNewTab = { dismiss(); onMenuNewTab() },
     onIncognito = { dismiss(); onMenuIncognito() },
     onNewProfileTab = { dismiss(); onMenuNewProfileTab() },
@@ -415,6 +419,11 @@ private fun BrowserMenuContent(
                 MenuNavIcon(
                     if (snapshot.page.isBookmarked) androidx.compose.material.icons.Icons.Filled.Bookmark else androidx.compose.material.icons.Icons.Filled.BookmarkBorder,
                     stringResource(R.string.content_desc_bookmark), true, actions.onToggleBookmark
+                )
+                MenuNavIcon(
+                    androidx.compose.material.icons.Icons.Filled.Download,
+                    stringResource(R.string.menu_save_page), snapshot.canSavePage,
+                    { if (snapshot.canSavePage) actions.onSavePage() }
                 )
             }
             MenuDivider()
