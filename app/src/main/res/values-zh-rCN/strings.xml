@@ -1175,6 +1175,8 @@
 
     <string name="link_open_in_new_tab">在新标签页中打开</string>
     <string name="link_open_new_tab_background">在后台打开新标签页</string>
+    <string name="link_open_new_incognito_tab">在新的无痕标签页中打开</string>
+    <string name="link_open_new_incognito_tab_background">在后台无痕标签页中打开</string>
     <string name="link_open_incognito">在无痕标签页中打开</string>
     <string name="link_preview_page">预览网页</string>
     <string name="preview_link_open_in_current_tab">在当前标签页中打开</string>
@@ -1237,7 +1239,7 @@
     <string name="history_summary">查看和管理网页浏览与搜索记录</string>
     <string name="history_empty">暂无历史记录</string>
     <string name="history_empty_hint">您访问过的网站和搜索内容将显示在此处。</string>
-    <string name="history_no_results">暂无历史记录</string>
+    <string name="history_no_results">没有与“%1$s”相关的结果</string>
     <string name="delete_data_title">清除浏览数据</string>
     <string name="delete_data_settings_summary">清理历史记录、Cookie、缓存文件与表单数据</string>
     <string name="delete_data_time_range">时间范围</string>
@@ -2080,7 +2082,7 @@
     <string name="settings_search">搜索设置</string>
     <string name="settings_search_hint">搜索设置…</string>
     <string name="settings_search_prompt">搜索全部设置</string>
-    <string name="settings_search_no_results">暂无内容</string>
+    <string name="settings_search_no_results">未找到与“%1$s”相关的设置</string>
     <string name="settings_group_general">常规设置</string>
     <string name="settings_group_privacy">防护</string>
     <string name="settings_group_data">下载与存储数据</string>
@@ -2324,7 +2326,7 @@
     <string name="translation_model_downloaded">已下载 · %1$s</string>
     <string name="translation_model_not_downloaded">未下载 · %1$s</string>
     <string name="translation_model_download">下载 %1$s</string>
-    <string name="translation_model_delete">删除</string>
+    <string name="translation_model_delete">删除 %1$s</string>
     <string name="translation_delete_all_title">删除所有语言包</string>
     <string name="translation_delete_all_summary">移除所有已下载的语言包以释放存储空间</string>
     <string name="translation_delete_all_confirm_title">删除所有语言包？</string>
