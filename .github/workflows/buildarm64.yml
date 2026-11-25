@@ -78,7 +78,7 @@ jobs:
           fi
 
       - name: Build GitHub Release APKs
-        run: ./gradlew assembleGithubRelease -PonlyAbi=arm64-v8a -x lintVitalGithubRelease
+        run: ./gradlew assembleGithubRelease -PonlyAbi=arm64-v8a
 
       - name: List generated APKs
         run: find app/build/outputs/apk/github/release -name "*.apk" | sort
