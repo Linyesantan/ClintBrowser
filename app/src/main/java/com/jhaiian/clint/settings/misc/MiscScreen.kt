@@ -97,7 +97,11 @@ fun MiscScreen(
     onRestartEngineClick: () -> Unit,
     onRestartEngineConfirm: () -> Unit,
     onRerunSetupClick: () -> Unit,
-    onRerunSetupConfirm: () -> Unit
+    onRerunSetupConfirm: () -> Unit,
+    automation: RemoteAutomationUiState,
+    automationStatus: com.jhaiian.clint.automation.RemoteAutomation.Status,
+    automationLanAddresses: List<String>,
+    automationActions: RemoteAutomationActions
 ) {
     val colors = LocalClintColors.current
 
@@ -117,6 +121,12 @@ fun MiscScreen(
                     onDismiss = { state.restartEngineConfirmDialogOpen = false }
                 )
             }
+            RemoteAutomationDialogs(
+                state = automation,
+                hideStatusBar = state.hideStatusBar,
+                hideSystemNavigation = state.hideSystemNavigation,
+                actions = automationActions
+            )
         }
     ) {
         SettingsSectionLabel(stringResource(R.string.misc_section_app))
@@ -159,5 +169,12 @@ fun MiscScreen(
                 onClick = onRerunSetupClick
             )
         }
+
+        RemoteAutomationSection(
+            state = automation,
+            status = automationStatus,
+            lanAddresses = automationLanAddresses,
+            actions = automationActions
+        )
     }
 }

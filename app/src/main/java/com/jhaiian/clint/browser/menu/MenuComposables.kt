@@ -142,7 +142,8 @@ internal data class BrowserMenuSnapshot(
     val canUseCookiesControl: Boolean,
     val canTranslatePage: Boolean,
     val isPageTranslated: Boolean,
-    val layout: BrowserMenuLayout
+    val layout: BrowserMenuLayout,
+    val canSavePage: Boolean = false
 )
 
 internal class BrowserMenuActions(
@@ -151,6 +152,7 @@ internal class BrowserMenuActions(
     val onHome: () -> Unit = {},
     val onRefreshOrStop: () -> Unit = {},
     val onToggleBookmark: () -> Unit = {},
+    val onSavePage: () -> Unit = {},
     val onNewTab: () -> Unit = {},
     val onIncognito: () -> Unit = {},
     val onNewProfileTab: () -> Unit = {},
@@ -233,7 +235,8 @@ internal fun MainActivity.buildMenuSnapshot(previous: BrowserMenuSnapshot?): Bro
         canUseCookiesControl = tab?.isIncognito == false && isHttp,
         canTranslatePage = isHttp,
         isPageTranslated = (wv as? ClintWebView)?.translator?.state?.value?.isRequested == true,
-        layout = BrowserMenuCustomizationStore.readLayout(prefs)
+        layout = BrowserMenuCustomizationStore.readLayout(prefs),
+        canSavePage = currentUrl.isNotEmpty() && !isClintHomeUrl(currentUrl)
     )
 }
 
@@ -270,6 +273,7 @@ internal fun MainActivity.buildMenuActions(dismiss: () -> Unit): BrowserMenuActi
     onHome = { dismiss(); onMenuHome() },
     onRefreshOrStop = { dismiss(); onMenuRefreshOrStop() },
     onToggleBookmark = { dismiss(); onMenuToggleBookmark() },
+    onSavePage = { dismiss(); onMenuSavePage() },
     onNewTab = { dismiss(); onMenuNewTab() },
     onIncognito = { dismiss(); onMenuIncognito() },
     onNewProfileTab = { dismiss(); onMenuNewProfileTab() },
@@ -312,7 +316,11 @@ internal fun MainActivity.buildMenuActions(dismiss: () -> Unit): BrowserMenuActi
 )
 
 @Composable
-internal fun MenuTriggerButton(activity: MainActivity, modifier: Modifier = Modifier) {
+internal fun MenuTriggerButton(
+    activity: MainActivity,
+    modifier: Modifier = Modifier,
+    tint: androidx.compose.ui.graphics.Color? = null
+) {
     var expanded by remember { mutableStateOf(false) }
     var snapshot by remember { mutableStateOf<BrowserMenuSnapshot?>(null) }
     val colors = LocalClintColors.current
@@ -335,7 +343,7 @@ internal fun MenuTriggerButton(activity: MainActivity, modifier: Modifier = Modi
             Icon(
                 imageVector = Icons.Filled.MoreVert,
                 contentDescription = stringResource(R.string.menu),
-                tint = colors.iconTint
+                tint = tint ?: colors.iconTint
             )
         }
 
@@ -589,6 +597,11 @@ private fun menuEntryFor(
                 onClick = actions.onToggleTabMute
             )
         } else null
+        CustomizableMenuItem.SAVE_PAGE -> MenuEntryUi(
+            item, item.icon(), label,
+            enabled = snapshot.canSavePage,
+            onClick = actions.onSavePage
+        )
         CustomizableMenuItem.COOKIES_CONTROL -> MenuEntryUi(
             item, item.icon(), label,
             enabled = snapshot.canUseCookiesControl,
@@ -805,6 +818,7 @@ private fun MenuNavRow(snapshot: BrowserMenuSnapshot, actions: BrowserMenuAction
                 MenuNavSlot.BOOKMARK -> MenuNavIcon(if (snapshot.page.isBookmarked) Icons.Filled.Bookmark else slot.icon(), label, true, actions.onToggleBookmark)
                 MenuNavSlot.SHARE -> MenuNavIcon(slot.icon(), label, snapshot.isWebPage, actions.onShare)
                 MenuNavSlot.NEW_TAB -> MenuNavIcon(slot.icon(), label, true, actions.onNewTab)
+                MenuNavSlot.SAVE_PAGE -> MenuNavIcon(slot.icon(), label, snapshot.canSavePage) { if (snapshot.canSavePage) actions.onSavePage() }
             }
         }
     }

@@ -58,10 +58,21 @@ object DocumentViewer {
 
         executor.submit {
             try {
-                val request = Request.Builder().url(url).build()
-                val markdown = client.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) throw Exception("HTTP ${response.code}")
-                    response.body.string()
+                val isZh = context.resources.configuration.locales[0].language == "zh"
+                val localAsset = when {
+                    isZh && url.contains("PRIVACY_POLICY") -> "privacy_policy_zh.md"
+                    isZh && url.contains("TERMS") -> "terms_of_service_zh.md"
+                    else -> null
+                }
+
+                val markdown = if (localAsset != null) {
+                    context.assets.open(localAsset).bufferedReader().use { it.readText() }
+                } else {
+                    val request = Request.Builder().url(url).build()
+                    client.newCall(request).execute().use { response ->
+                        if (!response.isSuccessful) throw Exception("HTTP ${response.code}")
+                        response.body.string()
+                    }
                 }
                 mainHandler.post {
                     state.markdown = markdown

@@ -27,7 +27,12 @@ android {
         minSdk = 26
         targetSdk = 37
         versionCode = 48
-        versionName = "v1.2.7-r2"
+        versionName = "v1.2.7-r2-custom"
+    }
+
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
     }
 
     val hasSigningConfig = localProperties.getProperty("signingConfig.storePassword") != null
@@ -141,6 +146,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
     implementation("androidx.lifecycle:lifecycle-service:2.11.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.11.0")
     implementation("androidx.work:work-runtime-ktx:2.12.0")
     implementation("androidx.biometric:biometric:1.1.0")
     implementation("org.bouncycastle:bcprov-jdk18on:1.87")

@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SmartButton
+import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ManageSearch
 import androidx.compose.material.icons.automirrored.filled.AddToHomeScreen
@@ -683,6 +684,7 @@ internal fun buildSettingsSearchEntries(context: Context): List<SettingsSearchEn
         item(R.string.network_auto_recovery_title, R.string.network_auto_recovery_summary, R.string.misc_section_network, icon = Icons.Filled.Autorenew)
         item(R.string.network_restart_engine_title, R.string.network_restart_engine_summary, R.string.misc_section_network, icon = Icons.Filled.RestartAlt)
         item(R.string.pref_rerun_setup_title, R.string.pref_rerun_setup_summary, R.string.misc_section_setup, icon = Icons.Filled.Refresh)
+        item(R.string.remote_automation_title, R.string.remote_automation_summary, R.string.remote_automation_section, icon = Icons.Filled.SmartToy)
     }
 
     page(DEST_ABOUT, R.string.about, Icons.Filled.Info) {

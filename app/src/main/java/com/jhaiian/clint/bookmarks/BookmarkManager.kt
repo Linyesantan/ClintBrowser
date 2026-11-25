@@ -30,6 +30,14 @@ object BookmarkManager {
 
     private const val IN_PROFILE = "${BookmarkDatabase.COL_PROFILE_ID} = ?"
 
+    /** Called after every change to bookmarks or folders (used to trigger bookmark sync). */
+    @Volatile var changeListener: ((Context) -> Unit)? = null
+
+    private fun notifyChanged(context: Context) {
+        val listener = changeListener ?: return
+        runCatching { listener(context.applicationContext) }
+    }
+
     private fun db(context: Context): BookmarkDatabase {
         return db ?: synchronized(this) {
             db ?: BookmarkDatabase(context.applicationContext).also {
@@ -109,7 +117,9 @@ object BookmarkManager {
             put(BookmarkDatabase.COL_FOLDER_CREATED_AT, System.currentTimeMillis())
             put(BookmarkDatabase.COL_FOLDER_PROFILE_ID, pid(context))
         }
-        return db(context).writableDatabase.insert(BookmarkDatabase.FOLDER_TABLE, null, values)
+        val id = db(context).writableDatabase.insert(BookmarkDatabase.FOLDER_TABLE, null, values)
+        notifyChanged(context)
+        return id
     }
 
     fun renameFolder(context: Context, folderId: Long, name: String) {
@@ -118,6 +128,7 @@ object BookmarkManager {
             BookmarkDatabase.FOLDER_TABLE, values,
             "${BookmarkDatabase.COL_FOLDER_ID} = ?", arrayOf(folderId.toString())
         )
+        notifyChanged(context)
     }
 
     fun moveFolder(context: Context, folderId: Long, targetParentId: Long?) {
@@ -129,6 +140,7 @@ object BookmarkManager {
             BookmarkDatabase.FOLDER_TABLE, values,
             "${BookmarkDatabase.COL_FOLDER_ID} = ?", arrayOf(folderId.toString())
         )
+        notifyChanged(context)
     }
 
     fun deleteFolderRecursive(context: Context, folderId: Long) {
@@ -140,6 +152,7 @@ object BookmarkManager {
         } finally {
             writable.endTransaction()
         }
+        notifyChanged(context)
     }
 
     private fun deleteFolderInternal(writable: SQLiteDatabase, folderId: Long) {
@@ -163,6 +176,7 @@ object BookmarkManager {
             BookmarkDatabase.TABLE, values,
             "${BookmarkDatabase.COL_URL} = ? AND $IN_PROFILE", arrayOf(url, pid(context))
         )
+        notifyChanged(context)
     }
 
     fun add(context: Context, bookmark: Bookmark) {
@@ -178,6 +192,7 @@ object BookmarkManager {
         db(context).writableDatabase.insertWithOnConflict(
             BookmarkDatabase.TABLE, null, values, SQLiteDatabase.CONFLICT_IGNORE
         )
+        notifyChanged(context)
     }
 
     fun remove(context: Context, url: String) {
@@ -186,6 +201,16 @@ object BookmarkManager {
             "${BookmarkDatabase.COL_URL} = ? AND $IN_PROFILE",
             arrayOf(url, pid(context))
         )
+        notifyChanged(context)
+    }
+
+    fun updateTitle(context: Context, url: String, title: String) {
+        val values = ContentValues().apply { put(BookmarkDatabase.COL_TITLE, title) }
+        db(context).writableDatabase.update(
+            BookmarkDatabase.TABLE, values,
+            "${BookmarkDatabase.COL_URL} = ? AND $IN_PROFILE", arrayOf(url, pid(context))
+        )
+        notifyChanged(context)
     }
 
     fun updateLastVisit(context: Context, url: String) {
@@ -239,6 +264,7 @@ object BookmarkManager {
         db(context).writableDatabase.insertWithOnConflict(
             BookmarkDatabase.TABLE, null, values, SQLiteDatabase.CONFLICT_IGNORE
         )
+        notifyChanged(context)
     }
 
     fun removeProfile(context: Context, profileId: String) {

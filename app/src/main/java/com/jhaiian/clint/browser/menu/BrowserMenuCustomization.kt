@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.FindInPage
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Shield
@@ -40,6 +41,7 @@ enum class CustomizableMenuItem(val id: String, val defaultSection: MenuSection)
     CREATE_SHORTCUT("create_shortcut", MenuSection.GRID),
     CREATE_FAVORITE("create_favorite", MenuSection.LIST),
     DOWNLOADS("downloads", MenuSection.GRID),
+    SAVE_PAGE("save_page", MenuSection.GRID),
     MEDIA_CAPTURE("media_capture", MenuSection.TOGGLES),
     USER_SCRIPTS("userscripts", MenuSection.TOGGLES),
     QUIVER_GUARD("quiver_guard", MenuSection.TOGGLES),
@@ -95,7 +97,8 @@ enum class MenuNavSlot(val id: String) {
     RELOAD("reload"),
     BOOKMARK("bookmark"),
     SHARE("share"),
-    NEW_TAB("new_tab");
+    NEW_TAB("new_tab"),
+    SAVE_PAGE("save_page");
 
     companion object {
         val DEFAULT: List<MenuNavSlot> = listOf(BACK, FORWARD, RELOAD, BOOKMARK, SHARE)
@@ -111,6 +114,7 @@ fun MenuNavSlot.icon(): ImageVector = when (this) {
     MenuNavSlot.BOOKMARK -> Icons.Filled.BookmarkBorder
     MenuNavSlot.SHARE -> Icons.Filled.Share
     MenuNavSlot.NEW_TAB -> Icons.Filled.Add
+    MenuNavSlot.SAVE_PAGE -> Icons.Filled.SaveAlt
 }
 
 fun MenuNavSlot.titleRes(): Int = when (this) {
@@ -121,6 +125,7 @@ fun MenuNavSlot.titleRes(): Int = when (this) {
     MenuNavSlot.BOOKMARK -> R.string.content_desc_bookmark
     MenuNavSlot.SHARE -> R.string.share_url
     MenuNavSlot.NEW_TAB -> R.string.new_tab
+    MenuNavSlot.SAVE_PAGE -> R.string.menu_save_page
 }
 
 data class BrowserMenuLayout(
@@ -146,6 +151,7 @@ fun CustomizableMenuItem.icon(): ImageVector = when (this) {
     CustomizableMenuItem.CREATE_SHORTCUT -> Icons.AutoMirrored.Filled.AddToHomeScreen
     CustomizableMenuItem.CREATE_FAVORITE -> Icons.Filled.StarBorder
     CustomizableMenuItem.DOWNLOADS -> Icons.Filled.Download
+    CustomizableMenuItem.SAVE_PAGE -> Icons.Filled.SaveAlt
     CustomizableMenuItem.MEDIA_CAPTURE -> Icons.Filled.VideoLibrary
     CustomizableMenuItem.USER_SCRIPTS -> Icons.Filled.Code
     CustomizableMenuItem.QUIVER_GUARD -> Icons.Filled.Security
@@ -173,6 +179,7 @@ fun CustomizableMenuItem.titleRes(): Int = when (this) {
     CustomizableMenuItem.CREATE_SHORTCUT -> R.string.menu_create_shortcut
     CustomizableMenuItem.CREATE_FAVORITE -> R.string.menu_create_favorite
     CustomizableMenuItem.DOWNLOADS -> R.string.menu_downloads
+    CustomizableMenuItem.SAVE_PAGE -> R.string.menu_save_page
     CustomizableMenuItem.MEDIA_CAPTURE -> R.string.menu_media_capture
     CustomizableMenuItem.USER_SCRIPTS -> R.string.user_scripts_title
     CustomizableMenuItem.QUIVER_GUARD -> R.string.menu_quiver_guard

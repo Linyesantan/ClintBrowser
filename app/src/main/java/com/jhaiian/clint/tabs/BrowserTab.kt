@@ -6,7 +6,7 @@ import java.util.UUID
 
 data class BrowserTab(
     val id: String = UUID.randomUUID().toString(),
-    var title: String = "New Tab",
+    var title: String = TabManager.defaultTitle,
     var url: String = "",
     val isIncognito: Boolean = false,
     val isRefreshLinkTab: Boolean = false,
