@@ -102,6 +102,8 @@ internal class MainUiState {
     var popupAlertRequest by mutableStateOf<com.jhaiian.clint.browser.dialogs.PopupAlertRequest?>(null)
     var refreshLinkDialogRequest by mutableStateOf<com.jhaiian.clint.browser.dialogs.RefreshLinkDialogRequest?>(null)
     var profilePickerOpen by mutableStateOf(false)
+    // true when the picker was opened by long-pressing "+": picking opens a new tab in that 身份组
+    var profilePickerForNewTab by mutableStateOf(false)
     var profileRevision by mutableIntStateOf(0)
     var tabGroupBar by mutableStateOf<com.jhaiian.clint.tabs.TabGroupBarState?>(null)
     var tabMenuFocusGroupId by mutableStateOf<String?>(null)

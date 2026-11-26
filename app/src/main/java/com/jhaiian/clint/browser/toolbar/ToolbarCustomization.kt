@@ -47,6 +47,7 @@ fun searchBarShape(shape: String): Shape = when (shape) {
 enum class ToolbarButton(val id: String, val canHide: Boolean) {
     MEDIA_CAPTURE("media_capture", true),
     PROFILE("profile", true),
+    NEW_TAB("new_tab", true),
     TAB_COUNT("tab_count", true),
     MENU("menu", false);
 
@@ -58,6 +59,7 @@ enum class ToolbarButton(val id: String, val canHide: Boolean) {
 fun ToolbarButton.icon(): ImageVector = when (this) {
     ToolbarButton.MEDIA_CAPTURE -> Icons.Filled.VideoLibrary
     ToolbarButton.PROFILE -> Icons.Filled.AccountCircle
+    ToolbarButton.NEW_TAB -> Icons.Filled.Add
     ToolbarButton.TAB_COUNT -> Icons.Filled.Tab
     ToolbarButton.MENU -> Icons.Filled.MoreVert
 }
@@ -65,6 +67,7 @@ fun ToolbarButton.icon(): ImageVector = when (this) {
 fun ToolbarButton.titleRes(): Int = when (this) {
     ToolbarButton.MEDIA_CAPTURE -> R.string.menu_media_capture
     ToolbarButton.PROFILE -> R.string.profiles_toolbar_button
+    ToolbarButton.NEW_TAB -> R.string.new_tab
     ToolbarButton.TAB_COUNT -> R.string.toolbar_customization_tab_counter
     ToolbarButton.MENU -> R.string.menu
 }
@@ -164,7 +167,7 @@ object ToolbarCustomizationStore {
         val order = stored.toMutableList().also { list ->
             ToolbarButton.entries.filter { it !in stored }.forEach { missing ->
                 val anchor = list.indexOf(ToolbarButton.TAB_COUNT)
-                if (missing == ToolbarButton.PROFILE && anchor >= 0) list.add(anchor, missing) else list.add(missing)
+                if ((missing == ToolbarButton.PROFILE || missing == ToolbarButton.NEW_TAB) && anchor >= 0) list.add(anchor, missing) else list.add(missing)
             }
         }
         val hidden = ids(prefs, PREF_HIDDEN).mapNotNull { ToolbarButton.fromId(it) }.filter { it.canHide }.toSet()

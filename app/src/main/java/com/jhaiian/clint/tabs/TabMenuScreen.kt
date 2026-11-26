@@ -404,19 +404,26 @@ fun TabMenuScreen(activity: MainActivity, onDismiss: () -> Unit) {
     }
 
     var showProfilePicker by remember { mutableStateOf(false) }
+    var profilePickerForNewTab by remember { mutableStateOf(false) }
     if (showProfilePicker) {
         com.jhaiian.clint.profiles.ProfilePickerDialog(
             profiles = remember { com.jhaiian.clint.profiles.ProfileRepository.all(activity) },
             hideStatusBar = hideStatusBar,
             hideSystemNavigation = hideSystemNavigation,
-            onPick = { id -> showProfilePicker = false; activity.onSwitchProfile(id); onDismiss() },
+            onPick = { id ->
+                val newTab = profilePickerForNewTab
+                showProfilePicker = false
+                profilePickerForNewTab = false
+                if (newTab) activity.onNewTabInProfile(id) else activity.onSwitchProfile(id)
+                onDismiss()
+            },
             selectedId = activity.tabManager.activeProfileId,
             onManage = {
                 showProfilePicker = false
                 activity.startActivity(android.content.Intent(activity, com.jhaiian.clint.profiles.ProfilesActivity::class.java))
                 onDismiss()
             },
-            onDismiss = { showProfilePicker = false }
+            onDismiss = { showProfilePicker = false; profilePickerForNewTab = false }
         )
     }
 
@@ -834,7 +841,15 @@ fun TabMenuScreen(activity: MainActivity, onDismiss: () -> Unit) {
                     text = stringResource(R.string.new_tab),
                     iconRes = Icons.Filled.Add,
                     modifier = Modifier.weight(1f).padding(end = 6.dp),
-                    onLongClick = { showProfilePicker = true },
+                    onLongClick = {
+                        if (com.jhaiian.clint.profiles.ProfileRepository.all(activity).isEmpty()) {
+                            activity.startActivity(android.content.Intent(activity, com.jhaiian.clint.profiles.ProfilesActivity::class.java))
+                            onDismiss()
+                        } else {
+                            profilePickerForNewTab = true
+                            showProfilePicker = true
+                        }
+                    },
                     onClick = { activity.onNewTab(); onDismiss() }
                 )
                 NewTabButton(

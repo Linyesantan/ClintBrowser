@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -95,6 +96,7 @@ internal fun AddressBarRow(
     onHomeClick: () -> Unit = {},
     openTabsSwipeDirection: Int = 0,
     isBottomBar: Boolean = false,
+    onNewTabLongPress: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val colors = LocalClintColors.current
@@ -368,6 +370,35 @@ internal fun AddressBarRow(
                 }
                 com.jhaiian.clint.browser.toolbar.ToolbarButton.PROFILE -> {
                     if (!isIncognito) com.jhaiian.clint.profiles.ProfileToolbarButton(activity)
+                }
+                com.jhaiian.clint.browser.toolbar.ToolbarButton.NEW_TAB -> {
+                    // "+" new-tab button: tap = new tab (incognito-aware), long-press = pick 身份组 for the new tab
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(start = 4.dp)
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .combinedClickable(
+                                onClickLabel = stringResource(if (isIncognito) R.string.new_incognito_tab else R.string.new_tab),
+                                onClick = { if (isIncognito) activity.onNewIncognitoTab() else activity.onNewTab() },
+                                onLongClick = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    when {
+                                        isIncognito -> activity.onNewIncognitoTab()
+                                        onNewTabLongPress != null -> onNewTabLongPress()
+                                        else -> activity.onNewTab()
+                                    }
+                                }
+                            )
+                    ) {
+                        Icon(
+                            imageVector = androidx.compose.material.icons.Icons.Filled.Add,
+                            contentDescription = stringResource(if (isIncognito) R.string.new_incognito_tab else R.string.new_tab),
+                            tint = colors.iconTint,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                 }
                 com.jhaiian.clint.browser.toolbar.ToolbarButton.TAB_COUNT -> {
                     Box(

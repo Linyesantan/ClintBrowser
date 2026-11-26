@@ -386,13 +386,19 @@ internal fun MainScreen(activity: MainActivity, state: MainUiState) {
                 profiles = remember { com.jhaiian.clint.profiles.ProfileRepository.all(activity) },
                 hideStatusBar = hideStatusBarPref,
                 hideSystemNavigation = hideSystemNavigationPref,
-                onPick = { id -> state.profilePickerOpen = false; activity.onSwitchProfile(id) },
+                onPick = { id ->
+                    val newTab = state.profilePickerForNewTab
+                    state.profilePickerOpen = false
+                    state.profilePickerForNewTab = false
+                    if (newTab) activity.onNewTabInProfile(id) else activity.onSwitchProfile(id)
+                },
                 selectedId = activity.tabManager.activeProfileId,
                 onManage = {
                     state.profilePickerOpen = false
+                    state.profilePickerForNewTab = false
                     activity.startActivity(android.content.Intent(activity, com.jhaiian.clint.profiles.ProfilesActivity::class.java))
                 },
-                onDismiss = { state.profilePickerOpen = false }
+                onDismiss = { state.profilePickerOpen = false; state.profilePickerForNewTab = false }
             )
         }
         state.tabStripNewGroupTabId?.let { tabId ->
@@ -517,7 +523,8 @@ private fun TopToolbar(
             onHomeClick = { activity.navGoHome() },
             onSwipeTabChange = { direction -> activity.onSwipeTabChange(direction) },
             onSiteInfoClick = { if (!activity.openSiteInfo()) activity.openSearchOverlay(isBottom = false) },
-            openTabsSwipeDirection = 1
+            openTabsSwipeDirection = 1,
+            onNewTabLongPress = { activity.openNewTabProfilePicker() }
         )
         if (showTabGroupBar) TabGroupBarSlot(activity, state, onOpenTabGroup)
         PageLoadProgress(state)
@@ -626,7 +633,7 @@ private fun TabStripSlot(activity: MainActivity, state: MainUiState, onOpenTabGr
                 onCloseTab = { id -> activity.closeTabFromStrip(id) },
                 onCloseOtherTabs = { id -> activity.closeOtherTabsFromStrip(id) },
                 onNewTab = { activity.openNewTabFromStrip() },
-                onNewTabLongPress = { state.profilePickerOpen = true },
+                onNewTabLongPress = { activity.openNewTabProfilePicker() },
                 onNewTabInGroup = { groupId -> activity.openNewTabInGroup(groupId) },
                 onAddToNewGroup = { id -> state.tabStripNewGroupTabId = id },
                 onRemoveFromGroup = { id -> activity.removeTabFromGroup(id) },
@@ -733,7 +740,8 @@ private fun BottomToolbar(
             onSwipeTabChange = { direction -> activity.onSwipeTabChange(direction) },
             onSiteInfoClick = { if (!activity.openSiteInfo()) activity.openSearchOverlay(isBottom = true) },
             openTabsSwipeDirection = -1,
-            isBottomBar = true
+            isBottomBar = true,
+            onNewTabLongPress = { activity.openNewTabProfilePicker() }
         )
         if (state.toolbarLayout.showInBottomPosition) BottomNavButtons(activity, state, 0, onTabCountClick)
     }

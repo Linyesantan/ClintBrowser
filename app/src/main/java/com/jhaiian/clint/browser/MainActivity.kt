@@ -774,6 +774,15 @@ class MainActivity : ClintActivity(), OverlayHostActivity, SnackbarHostActivity,
     fun onNewTab() { openNewTab(false) }
     fun onNewTabInProfile(profileId: String) { openNewTab(isIncognito = false, profileId = profileId) }
     fun onSwitchProfile(profileId: String) { switchProfile(profileId) }
+    /** Long-press "+": pick a 身份组 and open a new tab in it (opens 身份组 settings when none exist). */
+    fun openNewTabProfilePicker() {
+        if (com.jhaiian.clint.profiles.ProfileRepository.all(this).isEmpty()) {
+            startActivity(android.content.Intent(this, com.jhaiian.clint.profiles.ProfilesActivity::class.java))
+        } else {
+            uiState.profilePickerForNewTab = true
+            uiState.profilePickerOpen = true
+        }
+    }
     fun onNewIncognitoTab() { openNewTab(true) }
 
     fun onMenuGoBack() { navGoBack() }
